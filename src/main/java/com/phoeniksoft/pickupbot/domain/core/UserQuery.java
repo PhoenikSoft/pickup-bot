@@ -1,4 +1,4 @@
-package com.phoeniksoft.pickupbot.model;
+package com.phoeniksoft.pickupbot.domain.core;
 
 import lombok.Builder;
 import lombok.Data;

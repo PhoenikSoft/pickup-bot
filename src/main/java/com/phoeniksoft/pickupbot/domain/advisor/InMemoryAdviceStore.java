@@ -1,13 +1,9 @@
-package com.phoeniksoft.pickupbot.app.advisor;
-
-import com.phoeniksoft.pickupbot.model.Advice;
-import org.springframework.stereotype.Repository;
+package com.phoeniksoft.pickupbot.domain.advisor;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
 
-@Repository
-public class InMemoryAdviceStore implements AdviceStore {
+public class InMemoryAdviceStore implements AdviceStore<String> {
 
     private static final Advice DEFAULT_ADVICE = new Advice("-1", "Try to invite her for a date.", Optional.empty());
 

@@ -1,18 +1,13 @@
-package com.phoeniksoft.pickupbot.app.core;
+package com.phoeniksoft.pickupbot.domain.core;
 
-import com.phoeniksoft.pickupbot.app.PickupBotApi;
-import com.phoeniksoft.pickupbot.app.advisor.AdviceStore;
-import com.phoeniksoft.pickupbot.model.Advice;
-import com.phoeniksoft.pickupbot.model.UserAdvice;
-import com.phoeniksoft.pickupbot.model.UserQuery;
+import com.phoeniksoft.pickupbot.domain.advisor.Advice;
+import com.phoeniksoft.pickupbot.domain.advisor.AdviceStore;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
 @AllArgsConstructor
 public class SimplePickupBotImpl implements PickupBotApi {
 
-    private final AdviceStore adviceStore;
+    private final AdviceStore<String> adviceStore;
 
     @Override
     public UserAdvice getAdvice(UserQuery userQuery) {
