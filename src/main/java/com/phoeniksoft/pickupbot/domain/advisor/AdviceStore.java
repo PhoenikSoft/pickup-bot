@@ -1,10 +1,14 @@
 package com.phoeniksoft.pickupbot.domain.advisor;
 
-public interface AdviceStore<T> {
+import java.util.Optional;
 
-    Advice getById(T id);
+public interface AdviceStore {
 
-    Advice getStartAdvice();
+    Optional<Advice> getById(String id);
+
+    Optional<Advice> getNextAdvice(String prevAdviceId, NextAdviceParams params);
+
+    Optional<Advice> getStartAdvice();
 
     Advice getDefaultAdvice();
 }
