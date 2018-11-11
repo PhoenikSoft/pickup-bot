@@ -23,14 +23,14 @@ public class InMemoryAdviceStore implements AdviceStore {
         Advice nextAdvice = new Advice("1", "Advice #12");
         advicesById.put(nextAdvice.getId(), nextAdvice);
         Advice prevAdvice = new Advice("0", "Advice #11");
-        prevAdvice.getParams().put(NEXT_ADVICE_PARAM, Optional.of(nextAdvice));
+        prevAdvice.getPayload().put(NEXT_ADVICE_PARAM, Optional.of(nextAdvice));
         advicesById.put(prevAdvice.getId(), prevAdvice);
         startAdvices.add(prevAdvice);
 
         nextAdvice = new Advice("2", "Advice #22");
         advicesById.put(nextAdvice.getId(), nextAdvice);
         prevAdvice = new Advice("3", "Advice #21");
-        prevAdvice.getParams().put(NEXT_ADVICE_PARAM, Optional.of(nextAdvice));
+        prevAdvice.getPayload().put(NEXT_ADVICE_PARAM, Optional.of(nextAdvice));
         advicesById.put(prevAdvice.getId(), prevAdvice);
         startAdvices.add(prevAdvice);
     }
@@ -43,7 +43,7 @@ public class InMemoryAdviceStore implements AdviceStore {
     @Override
     public Optional<Advice> getNextAdvice(String prevAdviceId, NextAdviceParams params) {
         return getById(prevAdviceId)
-                .flatMap(a -> Optional.of((Advice) a.getParams().getOrDefault(NEXT_ADVICE_PARAM, DEFAULT_ADVICE)));
+                .flatMap(a -> Optional.of((Advice) a.getPayload().getOrDefault(NEXT_ADVICE_PARAM, DEFAULT_ADVICE)));
     }
 
     @Override

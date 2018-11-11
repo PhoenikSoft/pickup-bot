@@ -1,37 +1,35 @@
 package com.phoeniksoft.pickupbot;
 
 import com.phoeniksoft.pickupbot.domain.advisor.Advice;
-import com.phoeniksoft.pickupbot.domain.advisor.AdviceStore;
-import com.phoeniksoft.pickupbot.domain.advisor.NextAdviceParams;
-import com.phoeniksoft.pickupbot.infrastructure.neo4j.AdviceDto;
-import com.phoeniksoft.pickupbot.infrastructure.neo4j.Neo4jAdviceRepository;
+import com.phoeniksoft.pickupbot.domain.advisor.Advisor;
+import com.phoeniksoft.pickupbot.domain.context.AdviceType;
+import com.phoeniksoft.pickupbot.domain.context.UserAnswer;
+import com.phoeniksoft.pickupbot.domain.context.UserContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-
-import java.util.List;
-import java.util.Optional;
 
 @SpringBootApplication
 public class PickupBotApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext app = SpringApplication.run(PickupBotApplication.class, args);
-        AdviceStore adviceStore = app.getBean(AdviceStore.class);
+        Advisor adviceStore = app.getBean(Advisor.class);
 
-        Optional<Advice> advice = adviceStore.getById("3");
-        System.out.println(advice.get());
+        UserContext context = UserContext.builder().userIntent(AdviceType.START_MESSAGE).build();
+        Advice prevAdvice = adviceStore.getAdvice(context);
+        System.out.println("START ADVICE: " + prevAdvice);
 
-        NextAdviceParams params = new NextAdviceParams();
-        params.put(NextAdviceParams.USER_ANSWER_PARAM, "YES");
-        Optional<Advice> nextAdvice = adviceStore.getNextAdvice(advice.get().getId(), params);
-        System.out.println(nextAdvice.get());
+        context = UserContext.builder().userIntent(AdviceType.NEXT_STEP).userAnswer(UserAnswer.YES).build();
+        context.getPayload().put(UserContext.ContextPayload.PREV_ADVICE_PARAM, prevAdvice.getId());
+        System.out.println("NEXT ADVICE(if helped): " + adviceStore.getAdvice(context));
 
-        Optional<Advice> startAdvice = adviceStore.getStartAdvice();
-        System.out.println(startAdvice.get());
+        context = UserContext.builder().userIntent(AdviceType.NEXT_STEP).userAnswer(UserAnswer.NO).build();
+        context.getPayload().put(UserContext.ContextPayload.PREV_ADVICE_PARAM, prevAdvice.getId());
+        System.out.println("NEXT ADVICE(if not helped): " + adviceStore.getAdvice(context));
 
-        Advice defaultAdvice = adviceStore.getDefaultAdvice();
-        System.out.println(defaultAdvice);
+        context = UserContext.builder().userIntent(AdviceType.DATE_INVITATION).build();
+        System.out.println("NOT SUPPORTED: " + adviceStore.getAdvice(context));
 
         SpringApplication.exit(app);
     }

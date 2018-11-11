@@ -5,8 +5,6 @@ import com.phoeniksoft.pickupbot.domain.advisor.AdviceStore;
 import com.phoeniksoft.pickupbot.domain.advisor.NextAdviceParams;
 import lombok.AllArgsConstructor;
 
-import java.util.Collections;
-
 @AllArgsConstructor
 public class SimplePickupBotImpl implements PickupBotApi {
 

@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @Data
 @Builder
@@ -14,5 +13,8 @@ public final class Advice {
 
     private final String id;
     private final String msg;
-    private final Map<String, Object> params = new HashMap<>();
+    private final AdvicePayload payload = new AdvicePayload();
+
+    final class AdvicePayload extends HashMap<String, Object> {
+    }
 }
