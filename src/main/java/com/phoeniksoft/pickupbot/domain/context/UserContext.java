@@ -1,13 +1,13 @@
 package com.phoeniksoft.pickupbot.domain.context;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.util.HashMap;
 
-@Builder
-@Getter
+@Data
+@NoArgsConstructor
 public class UserContext {
 
     @NonNull

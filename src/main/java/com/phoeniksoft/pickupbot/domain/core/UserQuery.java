@@ -10,5 +10,6 @@ import java.util.Map;
 public final class UserQuery {
 
     private final UserCommand command;
+    private final UserMessage message;
     private final Map<String, Object> specificParams;
 }
