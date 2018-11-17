@@ -1,5 +1,6 @@
 package com.phoeniksoft.pickupbot.domain.context;
 
+import com.phoeniksoft.pickupbot.domain.core.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -14,6 +15,8 @@ public class UserContext {
     private AdviceType userIntent;
 
     private UserAnswer userAnswer;
+
+    private User userInfo;
 
     private final ContextPayload payload = new ContextPayload();
 
