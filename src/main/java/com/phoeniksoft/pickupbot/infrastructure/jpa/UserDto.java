@@ -22,7 +22,13 @@ public class UserDto {
     @Column(name = "telegram_id")
     private String telegramId;
 
-    public User toUser() {
+    User toUser() {
         return new User(id.toString());
+    }
+
+    static UserDto of(User user) {
+        UserDto dto = new UserDto();
+        dto.id = UUID.fromString(user.getId());
+        return dto;
     }
 }
