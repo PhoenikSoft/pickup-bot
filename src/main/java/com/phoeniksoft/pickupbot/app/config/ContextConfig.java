@@ -1,6 +1,7 @@
 package com.phoeniksoft.pickupbot.app.config;
 
 import com.phoeniksoft.pickupbot.domain.context.ContextFiller;
+import com.phoeniksoft.pickupbot.domain.context.ContextInterceptorsFiller;
 import com.phoeniksoft.pickupbot.domain.context.interceptors.*;
 import com.phoeniksoft.pickupbot.domain.core.user.UserStore;
 import org.springframework.context.annotation.Bean;

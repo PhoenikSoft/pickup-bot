@@ -1,7 +1,6 @@
-package com.phoeniksoft.pickupbot.domain.context.interceptors;
+package com.phoeniksoft.pickupbot.domain.context;
 
-import com.phoeniksoft.pickupbot.domain.context.ContextFiller;
-import com.phoeniksoft.pickupbot.domain.context.UserContext;
+import com.phoeniksoft.pickupbot.domain.context.interceptors.ContextInterceptor;
 import com.phoeniksoft.pickupbot.domain.core.UserQuery;
 import lombok.AllArgsConstructor;
 import lombok.val;

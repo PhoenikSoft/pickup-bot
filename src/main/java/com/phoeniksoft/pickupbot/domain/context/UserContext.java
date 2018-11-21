@@ -16,7 +16,7 @@ public class UserContext {
 
     private UserAnswer userAnswer;
 
-    private User userInfo;
+    private User user;
 
     private final ContextPayload payload = new ContextPayload();
 

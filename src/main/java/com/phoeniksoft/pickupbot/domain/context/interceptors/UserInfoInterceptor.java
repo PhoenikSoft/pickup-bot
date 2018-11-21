@@ -19,7 +19,7 @@ public class UserInfoInterceptor implements ContextInterceptor {
         UserQueryParams params = userQuery.getSpecificParams();
         if (params.containsKey(UserQueryParams.USER_ID_PARAM)) {
             Optional<User> userOpt = userStore.findById(params.get(UserQueryParams.USER_ID_PARAM).toString());
-            userOpt.ifPresent(context::setUserInfo);
+            userOpt.ifPresent(context::setUser);
         }
     }
 }
