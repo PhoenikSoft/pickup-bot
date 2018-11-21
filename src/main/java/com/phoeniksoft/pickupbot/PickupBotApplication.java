@@ -1,10 +1,11 @@
 package com.phoeniksoft.pickupbot;
 
-import com.phoeniksoft.pickupbot.domain.advisor.Advice;
-import com.phoeniksoft.pickupbot.domain.advisor.Advisor;
-import com.phoeniksoft.pickupbot.domain.context.AdviceType;
-import com.phoeniksoft.pickupbot.domain.context.UserAnswer;
+import com.phoeniksoft.pickupbot.domain.context.ContextFiller;
 import com.phoeniksoft.pickupbot.domain.context.UserContext;
+import com.phoeniksoft.pickupbot.domain.core.UserCommand;
+import com.phoeniksoft.pickupbot.domain.core.UserMessage;
+import com.phoeniksoft.pickupbot.domain.core.UserQuery;
+import com.phoeniksoft.pickupbot.domain.core.UserQueryParams;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -14,23 +15,18 @@ public class PickupBotApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext app = SpringApplication.run(PickupBotApplication.class, args);
-        Advisor adviceStore = app.getBean(Advisor.class);
+        try {
+            ContextFiller contextFiller = app.getBean(ContextFiller.class);
 
-        UserContext context = UserContext.builder().userIntent(AdviceType.START_MESSAGE).build();
-        Advice prevAdvice = adviceStore.getAdvice(context);
-        System.out.println("START ADVICE: " + prevAdvice);
-
-        context = UserContext.builder().userIntent(AdviceType.NEXT_STEP).userAnswer(UserAnswer.YES).build();
-        context.getPayload().put(UserContext.ContextPayload.PREV_ADVICE_PARAM, prevAdvice.getId());
-        System.out.println("NEXT ADVICE(if helped): " + adviceStore.getAdvice(context));
-
-        context = UserContext.builder().userIntent(AdviceType.NEXT_STEP).userAnswer(UserAnswer.NO).build();
-        context.getPayload().put(UserContext.ContextPayload.PREV_ADVICE_PARAM, prevAdvice.getId());
-        System.out.println("NEXT ADVICE(if not helped): " + adviceStore.getAdvice(context));
-
-        context = UserContext.builder().userIntent(AdviceType.DATE_INVITATION).build();
-        System.out.println("NOT SUPPORTED: " + adviceStore.getAdvice(context));
-
-        SpringApplication.exit(app);
+            UserQuery userQuery = UserQuery.builder()
+                    .command(UserCommand.GET_START_ADVICE)
+                    .message(new UserMessage("NO"))
+                    .build();
+            userQuery.getSpecificParams().put(UserQueryParams.USER_ID_PARAM, "1123e394-a38f-4baf-9d34-23a12e39cacc");
+            UserContext userContext = contextFiller.fillContext(userQuery);
+            System.out.println(userContext);
+        } finally {
+            SpringApplication.exit(app);
+        }
     }
 }
