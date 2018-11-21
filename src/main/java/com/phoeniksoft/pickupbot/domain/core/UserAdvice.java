@@ -1,5 +1,6 @@
-package com.phoeniksoft.pickupbot.model;
+package com.phoeniksoft.pickupbot.domain.core;
 
+import com.phoeniksoft.pickupbot.domain.advisor.Advice;
 import lombok.Data;
 
 import java.util.HashMap;

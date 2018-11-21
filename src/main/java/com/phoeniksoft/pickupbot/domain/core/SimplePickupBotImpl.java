@@ -1,14 +1,10 @@
-package com.phoeniksoft.pickupbot.app.core;
+package com.phoeniksoft.pickupbot.domain.core;
 
-import com.phoeniksoft.pickupbot.app.PickupBotApi;
-import com.phoeniksoft.pickupbot.app.advisor.AdviceStore;
-import com.phoeniksoft.pickupbot.model.Advice;
-import com.phoeniksoft.pickupbot.model.UserAdvice;
-import com.phoeniksoft.pickupbot.model.UserQuery;
+import com.phoeniksoft.pickupbot.domain.advisor.Advice;
+import com.phoeniksoft.pickupbot.domain.advisor.AdviceStore;
+import com.phoeniksoft.pickupbot.domain.advisor.NextAdviceParams;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
 @AllArgsConstructor
 public class SimplePickupBotImpl implements PickupBotApi {
 
@@ -19,12 +15,11 @@ public class SimplePickupBotImpl implements PickupBotApi {
         Advice response;
         switch (userQuery.getCommand()) {
             case GET_START_ADVICE:
-                response = adviceStore.getStartAdvice();
+                response = adviceStore.getStartAdvice().orElse(adviceStore.getDefaultAdvice());
                 break;
             case GET_NEXT_ADVICE:
                 Object prevAdviceId = userQuery.getSpecificParams().get("prevAdviceId");
-                response = adviceStore.getById(prevAdviceId.toString())
-                        .getNextAdvice()
+                response = adviceStore.getNextAdvice(prevAdviceId.toString(), new NextAdviceParams())
                         .orElse(adviceStore.getDefaultAdvice());
                 break;
             default:
