@@ -3,6 +3,7 @@ package com.phoeniksoft.pickupbot.infrastructure.jpa;
 import com.phoeniksoft.pickupbot.domain.core.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -23,12 +24,15 @@ public class UserDto {
     private String telegramId;
 
     User toUser() {
-        return new User(id.toString());
+        return new User(telegramId);
     }
 
-    static UserDto of(User user) {
-        UserDto dto = new UserDto();
-        dto.id = UUID.fromString(user.getId());
-        return dto;
+    public static UserDto of(@NonNull User user) {
+        UserDto userDto = new UserDto();
+        if (user.getId() != null) {
+            userDto.setTelegramId(user.getId());
+        }
+        return userDto;
     }
+
 }

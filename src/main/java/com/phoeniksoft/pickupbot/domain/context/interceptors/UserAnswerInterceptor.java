@@ -8,7 +8,9 @@ public class UserAnswerInterceptor implements ContextInterceptor {
 
     @Override
     public void fillContext(UserContext context, UserQuery userQuery) {
-        UserAnswer userAnswer = UserAnswer.valueOf(userQuery.getMessage().getValue());
-        context.setUserAnswer(userAnswer);
+        if (userQuery.getMessage() != null) {
+            UserAnswer userAnswer = UserAnswer.valueOf(userQuery.getMessage().getValue());
+            context.setUserAnswer(userAnswer);
+        }
     }
 }

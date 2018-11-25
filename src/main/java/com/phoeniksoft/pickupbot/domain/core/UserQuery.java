@@ -1,11 +1,7 @@
 package com.phoeniksoft.pickupbot.domain.core;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Value;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Value
 @Builder

@@ -1,11 +1,11 @@
 package com.phoeniksoft.pickupbot.infrastructure.jpa;
 
 import com.phoeniksoft.pickupbot.domain.advisor.Advice;
-import com.phoeniksoft.pickupbot.domain.core.user.User;
 import com.phoeniksoft.pickupbot.domain.history.UserHistory;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_history")
+@ToString(exclude = "user")
 public class UserHistoryDto {
 
     @Id
@@ -42,9 +43,9 @@ public class UserHistoryDto {
                 .build();
     }
 
-    static UserHistoryDto of(@NonNull User user, @NonNull Advice advice) {
+    static UserHistoryDto of(@NonNull UserDto user, @NonNull Advice advice) {
         UserHistoryDto dto = new UserHistoryDto();
-        dto.user = UserDto.of(user);
+        dto.user = user;
         dto.adviceId = Long.valueOf(advice.getId());
         return dto;
     }
