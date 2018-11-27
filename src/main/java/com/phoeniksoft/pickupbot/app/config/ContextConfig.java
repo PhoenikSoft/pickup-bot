@@ -4,6 +4,7 @@ import com.phoeniksoft.pickupbot.domain.context.ContextFiller;
 import com.phoeniksoft.pickupbot.domain.context.ContextInterceptorsFiller;
 import com.phoeniksoft.pickupbot.domain.context.interceptors.*;
 import com.phoeniksoft.pickupbot.domain.core.user.UserStore;
+import com.phoeniksoft.pickupbot.domain.history.HistoryService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,12 +30,19 @@ public class ContextConfig {
     }
 
     @Bean
+    public PreviousAdviceInterceptor previousAdviceInterceptor(HistoryService historyService) {
+        return new PreviousAdviceInterceptor(historyService);
+    }
+
+    @Bean
     public ContextFiller contextFiller(UserCommandInterceptor userCommandInterceptor,
                                        UserAnswerInterceptor userAnswerInterceptor,
-                                       UserInfoInterceptor userInfoInterceptor) {
+                                       UserInfoInterceptor userInfoInterceptor,
+                                       PreviousAdviceInterceptor previousAdviceInterceptor) {
         List<ContextInterceptor> interceptors = Arrays.asList(userCommandInterceptor,
                 userAnswerInterceptor,
-                userInfoInterceptor);
+                userInfoInterceptor,
+                previousAdviceInterceptor);
         return new ContextInterceptorsFiller(interceptors);
     }
 }

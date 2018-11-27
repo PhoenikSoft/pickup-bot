@@ -4,10 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserDto, UUID> {
+public interface UserHistoryRepository extends JpaRepository<UserHistoryDto, Long> {
 
-    Optional<UserDto> findByTelegramId(String telegramId);
+    Optional<UserHistoryDto> findFirstByUserOrderByCreatedDesc(UserDto user);
 }

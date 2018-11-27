@@ -5,7 +5,6 @@ import com.phoeniksoft.pickupbot.domain.core.user.UserStore;
 import lombok.AllArgsConstructor;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @AllArgsConstructor
 public class JpaUserStore implements UserStore {
@@ -14,6 +13,11 @@ public class JpaUserStore implements UserStore {
 
     @Override
     public Optional<User> findById(String id) {
-        return userRepository.findById(UUID.fromString(id)).map(UserDto::toUser);
+        return userRepository.findByTelegramId(id).map(UserDto::toUser);
+    }
+
+    @Override
+    public User save(User user) {
+        return userRepository.save(UserDto.of(user)).toUser();
     }
 }
