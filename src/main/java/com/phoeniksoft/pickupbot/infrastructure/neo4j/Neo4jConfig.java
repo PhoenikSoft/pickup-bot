@@ -1,8 +1,6 @@
 package com.phoeniksoft.pickupbot.infrastructure.neo4j;
 
 import com.phoeniksoft.pickupbot.domain.advisor.AdviceStore;
-import org.neo4j.ogm.config.ClasspathConfigurationSource;
-import org.neo4j.ogm.config.ConfigurationSource;
 import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -36,9 +34,13 @@ public class Neo4jConfig {
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "spring.data.neo4j")
     public org.neo4j.ogm.config.Configuration configuration() {
-        ConfigurationSource props = new ClasspathConfigurationSource("neo4j.properties");
-        return new org.neo4j.ogm.config.Configuration.Builder(props).build();
+        String graphenedbURL = System.getenv("GRAPHENEDB_BOLT_URL");
+        String graphenedbUser = System.getenv("GRAPHENEDB_BOLT_USER");
+        String graphenedbPass = System.getenv("GRAPHENEDB_BOLT_PASSWORD");
+        return new org.neo4j.ogm.config.Configuration.Builder()
+                .uri(graphenedbURL)
+                .credentials(graphenedbUser, graphenedbPass)
+                .build();
     }
 }
