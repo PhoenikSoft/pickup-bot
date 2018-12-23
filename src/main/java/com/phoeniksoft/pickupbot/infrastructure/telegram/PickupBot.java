@@ -32,6 +32,7 @@ public class PickupBot extends TelegramLongPollingBot {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         try {
             telegramBotsApi.registerBot(this);
+            log.info("Pickup Bot is registered!");
         } catch (TelegramApiRequestException e) {
             log.error("Telegram request error", e);
         }
