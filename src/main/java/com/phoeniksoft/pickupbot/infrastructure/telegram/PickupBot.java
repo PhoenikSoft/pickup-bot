@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import javax.annotation.PostConstruct;
+import java.util.Optional;
 
 @Slf4j
 public class PickupBot extends TelegramLongPollingBot {
@@ -19,6 +20,12 @@ public class PickupBot extends TelegramLongPollingBot {
 
     @Value("${telegram.token}")
     private String botToken;
+
+    private TelegramFacade telegramFacade;
+
+    public PickupBot(TelegramFacade telegramFacade) {
+        this.telegramFacade = telegramFacade;
+    }
 
     @PostConstruct
     private void startBot() {
@@ -32,15 +39,10 @@ public class PickupBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            String messageText = update.getMessage().getText();
-            long chatId = update.getMessage().getChatId();
-
-            SendMessage message = new SendMessage()
-                    .setChatId(chatId)
-                    .setText(messageText);
+        Optional<SendMessage> sendMessage = telegramFacade.handleMessage(update);
+        if (sendMessage.isPresent()) {
             try {
-                execute(message);
+                execute(sendMessage.get());
             } catch (TelegramApiException e) {
                 log.error("Telegram api error", e);
             }
