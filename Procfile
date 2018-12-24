@@ -1,0 +1,1 @@
+web java $JAVA_OPTS -jar target/pickup-bot-0.1.jar
