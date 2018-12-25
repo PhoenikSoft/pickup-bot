@@ -35,7 +35,7 @@ public class BinaryAdvisor implements Advisor {
         requireNonNull(context.getUserAnswer());
         Object prevAdviceId = context.getPayload().get(UserContext.ContextPayload.PREV_ADVICE_PARAM);
         if (prevAdviceId == null) {
-            return getDefaultAdvice();
+            return getBeginAdvice();
         }
 
         NextAdviceParams params = new NextAdviceParams();
