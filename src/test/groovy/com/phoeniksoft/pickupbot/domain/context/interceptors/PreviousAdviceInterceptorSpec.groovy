@@ -1,6 +1,8 @@
 package com.phoeniksoft.pickupbot.domain.context.interceptors
 
 import com.phoeniksoft.pickupbot.domain.context.UserContext
+import com.phoeniksoft.pickupbot.domain.core.UserCommand
+import com.phoeniksoft.pickupbot.domain.core.UserQuery
 import com.phoeniksoft.pickupbot.domain.core.user.User
 import com.phoeniksoft.pickupbot.domain.history.HistoryService
 import org.mockito.InjectMocks
@@ -26,12 +28,13 @@ class PreviousAdviceInterceptorSpec extends Specification {
     def "test empty user in context"() {
         given:
         def context = new UserContext()
+        def query = UserQuery.builder().command(UserCommand.GET_NEXT_ADVICE).build()
 
         when:
-        previousAdviceInterceptor.fillContext(context, null)
+        def acceptable = previousAdviceInterceptor.isAcceptable(context, query)
 
         then:
-        context.getPayload().isEmpty()
+        !acceptable
     }
 
     def "test if there is no history for user"() {
@@ -53,6 +56,13 @@ class PreviousAdviceInterceptorSpec extends Specification {
         def user = new User("test")
         context.setUser(user)
         when(historyService.getLastAdviceId(any())).thenReturn(Optional.of("last"))
+        def query = UserQuery.builder().build()
+
+        when:
+        def acceptable = previousAdviceInterceptor.isAcceptable(context, query)
+
+        then:
+        !acceptable
 
         when:
         previousAdviceInterceptor.fillContext(context, null)
