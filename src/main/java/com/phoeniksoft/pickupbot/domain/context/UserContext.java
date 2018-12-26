@@ -18,7 +18,7 @@ public class UserContext {
 
     private User user;
 
-    private final ContextPayload payload = new ContextPayload();
+    private ContextPayload payload = new ContextPayload();
 
     public final class ContextPayload extends HashMap<String, Object> {
 

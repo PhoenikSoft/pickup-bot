@@ -9,5 +9,6 @@ public final class UserQuery {
 
     UserCommand command;
     UserMessage message;
+    @Builder.Default
     UserQueryParams specificParams = new UserQueryParams();
 }
