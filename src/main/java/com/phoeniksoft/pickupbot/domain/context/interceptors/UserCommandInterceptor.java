@@ -26,4 +26,9 @@ public class UserCommandInterceptor implements ContextInterceptor {
 
         context.setUserIntent(intent);
     }
+
+    @Override
+    public int priority() {
+        return HIGH_PRIORITY;
+    }
 }

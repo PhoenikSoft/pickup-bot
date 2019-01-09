@@ -29,10 +29,10 @@ class UserInfoInterceptorTest extends Specification {
         def query = UserQuery.builder().build()
 
         when:
-        userInfoInterceptor.fillContext(context, query)
+        def acceptable = userInfoInterceptor.isAcceptable(context, query)
 
         then:
-        context.getUser() == null
+        !acceptable
     }
 
     def "test if user has already exist in storage"() {

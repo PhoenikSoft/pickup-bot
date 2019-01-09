@@ -16,12 +16,19 @@ public class UserInfoInterceptor implements ContextInterceptor {
 
     @Override
     public void fillContext(UserContext context, UserQuery userQuery) {
-        UserQueryParams params = userQuery.getSpecificParams();
-        if (params.containsKey(UserQueryParams.USER_ID_PARAM)) {
-            String userId = params.get(UserQueryParams.USER_ID_PARAM).toString();
-            Optional<User> userOpt = userStore.findById(userId);
-            User user = userOpt.orElseGet(() -> userStore.save(new User(userId)));
-            context.setUser(user);
-        }
+        String userId = userQuery.getSpecificParams().get(UserQueryParams.USER_ID_PARAM).toString();
+        Optional<User> userOpt = userStore.findById(userId);
+        User user = userOpt.orElseGet(() -> userStore.save(new User(userId)));
+        context.setUser(user);
+    }
+
+    @Override
+    public boolean isAcceptable(UserContext context, UserQuery userQuery) {
+        return userQuery.getSpecificParams().containsKey(UserQueryParams.USER_ID_PARAM);
+    }
+
+    @Override
+    public int priority() {
+        return DEFAULT_PRIORITY + 10;
     }
 }

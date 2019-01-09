@@ -3,8 +3,8 @@ package com.phoeniksoft.pickupbot.domain.context;
 import com.phoeniksoft.pickupbot.domain.context.interceptors.ContextInterceptor;
 import com.phoeniksoft.pickupbot.domain.core.UserQuery;
 import lombok.AllArgsConstructor;
-import lombok.val;
 
+import java.util.Comparator;
 import java.util.List;
 
 @AllArgsConstructor
@@ -16,8 +16,10 @@ public class ContextInterceptorsFiller implements ContextFiller {
     public UserContext fillContext(UserQuery userQuery) {
         UserContext context = new UserContext();
 
-        for (val interceptor : interceptors) {
-            interceptor.fillContext(context, userQuery);
+        for (ContextInterceptor interceptor : interceptors) {
+            if (interceptor.isAcceptable(context, userQuery)) {
+                interceptor.fillContext(context, userQuery);
+            }
         }
 
         return context;
