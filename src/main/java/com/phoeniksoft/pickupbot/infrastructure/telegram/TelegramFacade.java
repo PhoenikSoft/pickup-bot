@@ -1,8 +1,9 @@
 package com.phoeniksoft.pickupbot.infrastructure.telegram;
 
-import com.phoeniksoft.pickupbot.domain.context.interceptors.exception.CannotRecognizeUserAnswerException;
+import com.phoeniksoft.pickupbot.domain.advisor.exception.NoNewStartAdviceForUserException;
 import com.phoeniksoft.pickupbot.domain.core.*;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -10,11 +11,13 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
-public class TelegramFacade {
+@Slf4j
+public class TelegramFacade implements TelegramConstants {
 
     private PickupBotApi pickupBotApi;
 
@@ -31,52 +34,59 @@ public class TelegramFacade {
     }
 
     private SendMessage constructUserAnswer(String messageText, long chatId) {
-        SendMessage message = new SendMessage()
-                .setChatId(chatId);
-        addKeyboardToResponse(message);
-        UserQuery query = buildUserQuery(messageText, chatId);
-        try {
-            UserAdvice advice = pickupBotApi.getAdvice(query);
-            message.setText(advice.getMsg() + "\nHelped?");
-        } catch (CannotRecognizeUserAnswerException ex) {
-            message.setText("Cannot analyze your answer. Please choose some option from the list below.");
+        SendMessage message = new SendMessage().setChatId(chatId);
+
+        if (START_COMMAND.equals(messageText)) {
+            message.setText(GREETING_MSG);
+            addKeyboardWithGetAdviceButton(message);
+        } else if (GET_ADVICE_COMMAND.equals(messageText)) {
+            UserQuery query = UserQuery.builder()
+                    .command(UserCommand.GET_START_ADVICE)
+                    .build();
+            query.getSpecificParams().put(UserQueryParams.USER_ID_PARAM, chatId);
+            try {
+                UserAdvice advice = pickupBotApi.getAdvice(query);
+                message.setText(advice.getMsg());
+                String[][] buttons = {{GOOD_ADVICE_COMMAND, BAD_ADVICE_COMMAND}};
+                addKeyboardWithButtons(message, buttons);
+            }catch (NoNewStartAdviceForUserException ex){
+                log.info(ex.getMessage());
+                message.setText(ALL_MESSAGES_SHOWN_MSG);
+                addKeyboardWithGetAdviceButton(message);
+            }
+        } else if (Arrays.asList(GOOD_ADVICE_COMMAND, BAD_ADVICE_COMMAND).contains(messageText)) {
+            message.setText(GREETING_MSG);
+            addKeyboardWithGetAdviceButton(message);
+        } else {
+            message.setText(UNRECOGNIZABLE_USER_ANSWER_ERROR);
+            addKeyboardWithGetAdviceButton(message);
         }
         return message;
     }
 
-    private UserQuery buildUserQuery(String messageText, long chatId) {
-        UserQuery query;
-        if ("New conversation".equals(messageText)) {
-            query = UserQuery.builder()
-                    .command(UserCommand.GET_START_ADVICE)
-                    .build();
-        } else {
-            query = UserQuery.builder()
-                    .command(UserCommand.GET_NEXT_ADVICE)
-                    .message(new UserMessage(messageText))
-                    .build();
-        }
-
-        query.getSpecificParams().put(UserQueryParams.USER_ID_PARAM, chatId);
-        return query;
+    private static void addKeyboardWithGetAdviceButton(SendMessage message){
+        String[][] buttons = {{GET_ADVICE_COMMAND}};
+        addKeyboardWithButtons(message, buttons);
     }
 
-    private void addKeyboardToResponse(SendMessage message) {
+    private static void addKeyboardWithButtons(SendMessage message, String[][] buttonsLabels){
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        for(String[] row : buttonsLabels){
+            KeyboardRow keyboardRow = new KeyboardRow();
+            for(String label : row){
+                keyboardRow.add(new KeyboardButton(label));
+            }
+            keyboard.add(keyboardRow);
+        }
+        addKeyboardWithListButtons(message, keyboard);
+    }
+
+    private static void addKeyboardWithListButtons(SendMessage message, List<KeyboardRow> keyboard) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         message.setReplyMarkup(replyKeyboardMarkup);
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
         replyKeyboardMarkup.setOneTimeKeyboard(false);
-
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow keyboardFirstRow = new KeyboardRow();
-        keyboardFirstRow.add(new KeyboardButton("Yes"));
-        keyboardFirstRow.add(new KeyboardButton("No"));
-        KeyboardRow keyboardSecondRow = new KeyboardRow();
-        keyboardSecondRow.add(new KeyboardButton("New conversation"));
-
-        keyboard.add(keyboardFirstRow);
-        keyboard.add(keyboardSecondRow);
         replyKeyboardMarkup.setKeyboard(keyboard);
     }
 

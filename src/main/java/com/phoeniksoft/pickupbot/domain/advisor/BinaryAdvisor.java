@@ -15,7 +15,7 @@ public class BinaryAdvisor implements Advisor {
         Advice adviceForUser;
         switch (context.getUserIntent()) {
             case START_MESSAGE:
-                adviceForUser = getBeginAdvice();
+                adviceForUser = getBeginAdvice(context);
                 break;
             case NEXT_STEP:
                 adviceForUser = getNextAdvice(context);
@@ -27,15 +27,15 @@ public class BinaryAdvisor implements Advisor {
         return adviceForUser;
     }
 
-    private Advice getBeginAdvice() {
-        return adviceStore.getStartAdvice().orElse(getDefaultAdvice());
+    private Advice getBeginAdvice(UserContext context) {
+        return adviceStore.getStartAdviceForUser(context.getUser().getId());
     }
 
     private Advice getNextAdvice(UserContext context) {
         requireNonNull(context.getUserAnswer());
         Object prevAdviceId = context.getPayload().get(UserContext.ContextPayload.PREV_ADVICE_PARAM);
         if (prevAdviceId == null) {
-            return getBeginAdvice();
+            return getBeginAdvice(context);
         }
 
         NextAdviceParams params = new NextAdviceParams();
