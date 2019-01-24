@@ -28,4 +28,9 @@ public class SimplePickupBotImpl implements PickupBotApi {
         }
         return UserAdvice.of(response);
     }
+
+    @Override
+    public void saveUserAnswer(UserQuery userQuery) {
+
+    }
 }

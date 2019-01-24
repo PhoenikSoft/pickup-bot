@@ -55,7 +55,17 @@ public class TelegramFacade implements TelegramConstants {
                 addKeyboardWithGetAdviceButton(message);
             }
         } else if (Arrays.asList(GOOD_ADVICE_COMMAND, BAD_ADVICE_COMMAND).contains(messageText)) {
-            message.setText(GREETING_MSG);
+            UserQuery query = UserQuery.builder()
+                    .command(UserCommand.RATE_ADVICE)
+                    .message(new UserMessage(messageText))
+                    .build();
+            query.getSpecificParams().put(UserQueryParams.USER_ID_PARAM, chatId);
+            pickupBotApi.saveUserAnswer(query);
+            if(GOOD_ADVICE_COMMAND.equals(messageText)){
+                message.setText(GOOD_ADVICE_ANSWER_MSG);
+            }else{
+                message.setText(BAD_ADVICE_ANSWER_MSG);
+            }
             addKeyboardWithGetAdviceButton(message);
         } else {
             message.setText(UNRECOGNIZABLE_USER_ANSWER_ERROR);

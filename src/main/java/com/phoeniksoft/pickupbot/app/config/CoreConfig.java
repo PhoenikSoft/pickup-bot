@@ -7,6 +7,7 @@ import com.phoeniksoft.pickupbot.domain.context.ContextFiller;
 import com.phoeniksoft.pickupbot.domain.core.PickupBotApi;
 import com.phoeniksoft.pickupbot.domain.core.PickupBotFacadeImpl;
 import com.phoeniksoft.pickupbot.domain.history.HistoryService;
+import com.phoeniksoft.pickupbot.domain.history.UserAnswersService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,8 +15,11 @@ import org.springframework.context.annotation.Configuration;
 public class CoreConfig {
 
     @Bean
-    public PickupBotApi pickupBotApi(ContextFiller contextFiller, Advisor advisor, HistoryService historyService) {
-        return new PickupBotFacadeImpl(contextFiller, advisor, historyService);
+    public PickupBotApi pickupBotApi(ContextFiller contextFiller,
+                                     Advisor advisor,
+                                     HistoryService historyService,
+                                     UserAnswersService userAnswersService) {
+        return new PickupBotFacadeImpl(contextFiller, advisor, historyService, userAnswersService);
     }
 
     @Bean
