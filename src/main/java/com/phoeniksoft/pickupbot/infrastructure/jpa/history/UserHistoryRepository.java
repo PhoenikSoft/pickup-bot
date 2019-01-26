@@ -1,5 +1,6 @@
-package com.phoeniksoft.pickupbot.infrastructure.jpa;
+package com.phoeniksoft.pickupbot.infrastructure.jpa.history;
 
+import com.phoeniksoft.pickupbot.infrastructure.jpa.user.UserDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

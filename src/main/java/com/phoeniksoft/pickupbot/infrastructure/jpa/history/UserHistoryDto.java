@@ -1,9 +1,8 @@
-package com.phoeniksoft.pickupbot.infrastructure.jpa;
+package com.phoeniksoft.pickupbot.infrastructure.jpa.history;
 
 import com.phoeniksoft.pickupbot.domain.advisor.Advice;
-import com.phoeniksoft.pickupbot.domain.context.UserAnswer;
-import com.phoeniksoft.pickupbot.domain.core.UserMessage;
-import com.phoeniksoft.pickupbot.domain.history.UserAnswerHistory;
+import com.phoeniksoft.pickupbot.domain.history.UserHistory;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.user.UserDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -16,21 +15,18 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "user_answers")
+@Table(name = "user_history")
 @ToString(exclude = "user")
-public class UserAnswerDto {
+public class UserHistoryDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "answer_id")
+    @Column(name = "history_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private UserDto user;
-
-    @Column(name = "answer", nullable = false)
-    private String answer;
 
     @Column(name = "advice_id", nullable = false)
     private Long adviceId;
@@ -39,20 +35,18 @@ public class UserAnswerDto {
     @CreationTimestamp
     private LocalDateTime created;
 
-    UserAnswerHistory toUserAnswerHistory() {
-        return UserAnswerHistory.builder()
+    UserHistory toUserHistory() {
+        return UserHistory.builder()
                 .id(id)
                 .user(user.toUser())
-                .answer(answer)
                 .adviceId(adviceId.toString())
                 .created(created)
                 .build();
     }
 
-    static UserAnswerDto of(@NonNull UserDto user, @NonNull UserAnswer answer, @NonNull Advice advice) {
-        UserAnswerDto dto = new UserAnswerDto();
+    static UserHistoryDto of(@NonNull UserDto user, @NonNull Advice advice) {
+        UserHistoryDto dto = new UserHistoryDto();
         dto.user = user;
-        dto.answer = answer.name();
         dto.adviceId = Long.valueOf(advice.getId());
         return dto;
     }

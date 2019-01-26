@@ -1,9 +1,13 @@
-package com.phoeniksoft.pickupbot.infrastructure.jpa;
+package com.phoeniksoft.pickupbot.infrastructure.jpa.answer;
 
 import com.phoeniksoft.pickupbot.domain.advisor.Advice;
 import com.phoeniksoft.pickupbot.domain.context.UserContext;
 import com.phoeniksoft.pickupbot.domain.history.UserAnswerHistory;
 import com.phoeniksoft.pickupbot.domain.history.UserAnswersService;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.history.UserHistoryDto;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.history.UserHistoryRepository;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.user.UserDto;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.user.UserRepository;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

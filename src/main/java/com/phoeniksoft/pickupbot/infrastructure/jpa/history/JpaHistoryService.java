@@ -1,9 +1,11 @@
-package com.phoeniksoft.pickupbot.infrastructure.jpa;
+package com.phoeniksoft.pickupbot.infrastructure.jpa.history;
 
 import com.phoeniksoft.pickupbot.domain.advisor.Advice;
 import com.phoeniksoft.pickupbot.domain.core.user.User;
 import com.phoeniksoft.pickupbot.domain.history.HistoryService;
 import com.phoeniksoft.pickupbot.domain.history.UserHistory;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.user.UserDto;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.user.UserRepository;
 import lombok.AllArgsConstructor;
 
 import java.util.Optional;
