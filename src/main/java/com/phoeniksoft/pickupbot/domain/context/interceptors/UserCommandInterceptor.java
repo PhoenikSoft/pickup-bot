@@ -19,8 +19,9 @@ public class UserCommandInterceptor implements ContextInterceptor {
             case FINISH_ADVICE:
                 intent = AdviceType.DATE_INVITATION;
                 break;
+            case RATE_ADVICE:
             default:
-                intent = AdviceType.START_MESSAGE;
+                intent = null;
                 break;
         }
 

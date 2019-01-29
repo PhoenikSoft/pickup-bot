@@ -1,4 +1,4 @@
-package com.phoeniksoft.pickupbot.infrastructure.jpa;
+package com.phoeniksoft.pickupbot.infrastructure.jpa.user;
 
 import com.phoeniksoft.pickupbot.domain.core.user.User;
 import com.phoeniksoft.pickupbot.domain.core.user.UserStore;

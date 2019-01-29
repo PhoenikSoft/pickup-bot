@@ -11,7 +11,6 @@ import java.util.HashMap;
 @NoArgsConstructor
 public class UserContext {
 
-    @NonNull
     private AdviceType userIntent;
 
     private UserAnswer userAnswer;

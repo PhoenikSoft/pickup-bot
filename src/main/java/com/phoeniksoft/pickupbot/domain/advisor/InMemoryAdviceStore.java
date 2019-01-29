@@ -52,6 +52,11 @@ public class InMemoryAdviceStore implements AdviceStore {
     }
 
     @Override
+    public Advice getStartAdviceForUser(String userId) {
+        return getStartAdvice().orElse(null);
+    }
+
+    @Override
     public Advice getDefaultAdvice() {
         return DEFAULT_ADVICE;
     }

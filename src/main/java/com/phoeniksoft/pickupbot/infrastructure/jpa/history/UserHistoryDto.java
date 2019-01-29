@@ -1,7 +1,8 @@
-package com.phoeniksoft.pickupbot.infrastructure.jpa;
+package com.phoeniksoft.pickupbot.infrastructure.jpa.history;
 
 import com.phoeniksoft.pickupbot.domain.advisor.Advice;
 import com.phoeniksoft.pickupbot.domain.history.UserHistory;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.user.UserDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;

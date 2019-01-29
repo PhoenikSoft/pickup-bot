@@ -2,6 +2,13 @@ package com.phoeniksoft.pickupbot.infrastructure.jpa;
 
 import com.phoeniksoft.pickupbot.domain.core.user.UserStore;
 import com.phoeniksoft.pickupbot.domain.history.HistoryService;
+import com.phoeniksoft.pickupbot.domain.history.UserAnswersService;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.answer.JpaUserAnswersService;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.answer.UserAnswersRepository;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.history.JpaHistoryService;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.history.UserHistoryRepository;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.user.JpaUserStore;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,6 +40,13 @@ public class JpaConfig {
     @Bean
     public HistoryService historyService(UserHistoryRepository userHistoryRepository, UserRepository userRepository) {
         return new JpaHistoryService(userHistoryRepository, userRepository);
+    }
+
+    @Bean
+    public UserAnswersService userAnswersService(UserAnswersRepository userAnswersRepository,
+                                                 UserRepository userRepository,
+                                                 UserHistoryRepository userHistoryRepository) {
+        return new JpaUserAnswersService(userAnswersRepository, userRepository, userHistoryRepository);
     }
 
     @Primary

@@ -1,4 +1,4 @@
-package com.phoeniksoft.pickupbot.infrastructure.jpa;
+package com.phoeniksoft.pickupbot.infrastructure.jpa.user;
 
 import com.phoeniksoft.pickupbot.domain.core.user.User;
 import lombok.Data;
@@ -23,7 +23,7 @@ public class UserDto {
     @Column(name = "telegram_id")
     private String telegramId;
 
-    User toUser() {
+    public User toUser() {
         return new User(telegramId);
     }
 

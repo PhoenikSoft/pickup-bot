@@ -10,5 +10,7 @@ public interface AdviceStore {
 
     Optional<Advice> getStartAdvice();
 
+    Advice getStartAdviceForUser(String userId);
+
     Advice getDefaultAdvice();
 }

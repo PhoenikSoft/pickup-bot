@@ -1,8 +1,10 @@
 package com.phoeniksoft.pickupbot.domain.advisor
 
+import com.phoeniksoft.pickupbot.domain.advisor.exception.NoNewStartAdviceForUserException
 import com.phoeniksoft.pickupbot.domain.context.AdviceType
 import com.phoeniksoft.pickupbot.domain.context.UserAnswer
 import com.phoeniksoft.pickupbot.domain.context.UserContext
+import com.phoeniksoft.pickupbot.domain.core.user.User
 import com.phoeniksoft.pickupbot.utils.AdvisorTestData
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -25,10 +27,12 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
     def "test get start advice with not empty advice"() {
         given:
         def expectedAdvice = validAdvice()
-        when(adviceStore.getStartAdvice()).thenReturn(Optional.of(expectedAdvice))
+        when(adviceStore.getStartAdviceForUser("testId")).thenReturn(expectedAdvice)
 
         when:
-        Advice result = binaryAdvisor.getAdvice(new UserContext(userIntent: AdviceType.START_MESSAGE))
+        Advice result = binaryAdvisor.getAdvice(new UserContext(
+                userIntent: AdviceType.START_MESSAGE,
+                user: new User("testId")))
 
         then:
         result == expectedAdvice
@@ -36,15 +40,15 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
 
     def "test get start advice with empty advice"() {
         given:
-        when(adviceStore.getStartAdvice()).thenReturn(Optional.empty())
-        def expectedAdvice = validAdvice()
-        when(adviceStore.getDefaultAdvice()).thenReturn(expectedAdvice)
+        when(adviceStore.getStartAdviceForUser("testId")).thenThrow(NoNewStartAdviceForUserException)
 
         when:
-        Advice result = binaryAdvisor.getAdvice(new UserContext(userIntent: AdviceType.START_MESSAGE))
+        binaryAdvisor.getAdvice(new UserContext(
+                userIntent: AdviceType.START_MESSAGE,
+                user: new User("testId")))
 
         then:
-        result == expectedAdvice
+        thrown NoNewStartAdviceForUserException
     }
 
     def "test get default advice if unknown command"() {
@@ -86,11 +90,12 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
     def "test get next advice without payload"() {
         given:
         def expectedAdvice = validAdvice()
-        when(adviceStore.getStartAdvice()).thenReturn(Optional.of(expectedAdvice))
+        when(adviceStore.getStartAdviceForUser("testId")).thenReturn(expectedAdvice)
 
         when:
         Advice result = binaryAdvisor.getAdvice(
                 new UserContext(userIntent: AdviceType.NEXT_STEP,
+                        user: new User("testId"),
                         userAnswer: UserAnswer.YES))
 
         then:

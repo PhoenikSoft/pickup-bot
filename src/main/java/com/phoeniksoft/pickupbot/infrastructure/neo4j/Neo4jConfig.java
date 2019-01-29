@@ -1,6 +1,7 @@
 package com.phoeniksoft.pickupbot.infrastructure.neo4j;
 
 import com.phoeniksoft.pickupbot.domain.advisor.AdviceStore;
+import com.phoeniksoft.pickupbot.domain.history.HistoryService;
 import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.transaction.Neo4jTransactionManager;
-import org.springframework.stereotype.Repository;
+
+import java.util.Random;
 
 @Configuration
 @ComponentScan
@@ -30,8 +32,8 @@ public class Neo4jConfig {
     private String graphenedbPass;
 
     @Bean
-    public AdviceStore adviceStore(Neo4jAdviceRepository repository) {
-        return new Neo4jAdviceStore(repository);
+    public AdviceStore adviceStore(Neo4jAdviceRepository repository, HistoryService historyService) {
+        return new Neo4jAdviceStore(repository, historyService, new Random());
     }
 
     @Bean(name = "getSessionFactory")
