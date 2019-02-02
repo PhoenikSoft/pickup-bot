@@ -13,7 +13,7 @@ import spock.lang.Specification
 import static org.mockito.ArgumentMatchers.any
 import static org.mockito.Mockito.when
 
-class UserInfoInterceptorTest extends Specification {
+class UserInfoInterceptorSpec extends Specification {
     @Mock
     UserStore userStore
     @InjectMocks

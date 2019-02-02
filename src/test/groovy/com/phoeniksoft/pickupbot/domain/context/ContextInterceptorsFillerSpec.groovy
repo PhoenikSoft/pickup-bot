@@ -5,7 +5,7 @@ import com.phoeniksoft.pickupbot.domain.core.UserQuery
 import spock.lang.Ignore
 import spock.lang.Specification
 
-class ContextInterceptorsFillerTest extends Specification {
+class ContextInterceptorsFillerSpec extends Specification {
 
     def interceptor1 = Mock(ContextInterceptor)
     def interceptor2 = Mock(ContextInterceptor)
