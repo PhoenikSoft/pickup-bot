@@ -1,6 +1,5 @@
 package com.phoeniksoft.pickupbot.infrastructure.neo4j;
 
-import com.phoeniksoft.pickupbot.domain.advisor.Advice;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;

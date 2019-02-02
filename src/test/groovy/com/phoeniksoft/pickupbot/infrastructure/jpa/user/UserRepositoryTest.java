@@ -1,4 +1,4 @@
-package com.phoeniksoft.pickupbot.infrastructure.jpa;
+package com.phoeniksoft.pickupbot.infrastructure.jpa.user;
 
 import com.phoeniksoft.pickupbot.common.JpaIntegrationTest;
 import com.phoeniksoft.pickupbot.infrastructure.jpa.user.UserDto;
