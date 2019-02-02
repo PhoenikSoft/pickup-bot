@@ -1,0 +1,1 @@
+INSERT INTO users (user_id, telegram_id) VALUES ( 1, '1' );
