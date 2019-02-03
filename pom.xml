@@ -76,6 +76,11 @@
             <version>1.2-groovy-2.4</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -93,6 +98,7 @@
                 <executions>
                     <execution>
                         <goals>
+                            <goal>addTestSources</goal>
                             <goal>compile</goal>
                             <goal>compileTests</goal>
                         </goals>

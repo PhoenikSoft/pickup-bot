@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -15,10 +14,9 @@ import java.util.UUID;
 public class UserDto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @org.hibernate.annotations.Type(type = "pg-uuid")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private UUID id;
+    private Long id;
 
     @Column(name = "telegram_id")
     private String telegramId;
