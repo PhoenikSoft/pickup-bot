@@ -104,7 +104,7 @@ class Neo4jAdviceStoreTest extends Specification implements TestData {
         given:
         def userId = "testId"
         when(historyService.getPastAdvicesIds(new User(userId))).thenReturn(["4"] as Set<String>)
-        when(adviceRepository.getStartNodesThatWerentUsed([4L] as Set<Long>)).thenReturn(validAdviceDtoList(3))
+        when(adviceRepository.getStartNodesThatWereNotUsed([4L] as Set<Long>)).thenReturn(validAdviceDtoList(3))
         when(ran.nextInt(3)).thenReturn(1)
 
         when:
@@ -119,7 +119,7 @@ class Neo4jAdviceStoreTest extends Specification implements TestData {
         given:
         def userId = "testId"
         when(historyService.getPastAdvicesIds(new User(userId))).thenReturn(["4"] as Set<String>)
-        when(adviceRepository.getStartNodesThatWerentUsed([4L] as Set<Long>)).thenReturn([])
+        when(adviceRepository.getStartNodesThatWereNotUsed([4L] as Set<Long>)).thenReturn([])
 
         when:
         neo4jAdviceStore.getStartAdviceForUser(userId)

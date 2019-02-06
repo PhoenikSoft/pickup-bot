@@ -8,9 +8,5 @@ public interface AdviceStore {
 
     Optional<Advice> getNextAdvice(String prevAdviceId, NextAdviceParams params);
 
-    Optional<Advice> getStartAdvice();
-
-    Advice getStartAdviceForUser(String userId);
-
     Advice getDefaultAdvice();
 }

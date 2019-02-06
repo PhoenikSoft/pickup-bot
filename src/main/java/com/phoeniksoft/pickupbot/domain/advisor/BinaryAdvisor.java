@@ -9,6 +9,7 @@ import static java.util.Objects.requireNonNull;
 public class BinaryAdvisor implements Advisor {
 
     private final AdviceStore adviceStore;
+    private final MessageStore messageStore;
 
     @Override
     public Advice getAdvice(UserContext context) {
@@ -28,7 +29,7 @@ public class BinaryAdvisor implements Advisor {
     }
 
     private Advice getBeginAdvice(UserContext context) {
-        return adviceStore.getStartAdviceForUser(context.getUser().getId());
+        return messageStore.getStartMessageForUser(context.getUser().getId());
     }
 
     private Advice getNextAdvice(UserContext context) {

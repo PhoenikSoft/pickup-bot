@@ -13,8 +13,6 @@ public class InMemoryAdviceStore implements AdviceStore {
 
     private List<Advice> startAdvices;
 
-    private final Random ran = new Random();
-
     @PostConstruct
     private void init() {
         advicesById = new HashMap<>(4);
@@ -44,16 +42,6 @@ public class InMemoryAdviceStore implements AdviceStore {
     public Optional<Advice> getNextAdvice(String prevAdviceId, NextAdviceParams params) {
         return getById(prevAdviceId)
                 .flatMap(a -> Optional.of((Advice) a.getPayload().getOrDefault(NEXT_ADVICE_PARAM, DEFAULT_ADVICE)));
-    }
-
-    @Override
-    public Optional<Advice> getStartAdvice() {
-        return Optional.ofNullable(startAdvices.get(ran.nextInt(startAdvices.size())));
-    }
-
-    @Override
-    public Advice getStartAdviceForUser(String userId) {
-        return getStartAdvice().orElse(null);
     }
 
     @Override
