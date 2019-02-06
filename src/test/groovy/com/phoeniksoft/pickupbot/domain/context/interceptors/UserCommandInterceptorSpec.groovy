@@ -1,6 +1,6 @@
 package com.phoeniksoft.pickupbot.domain.context.interceptors
 
-import com.phoeniksoft.pickupbot.domain.context.AdviceType
+import com.phoeniksoft.pickupbot.domain.context.AdviceGoal
 import com.phoeniksoft.pickupbot.domain.context.UserContext
 import com.phoeniksoft.pickupbot.domain.core.UserQuery
 import spock.lang.*
@@ -35,8 +35,8 @@ class UserCommandInterceptorSpec extends Specification {
 
         where:
         command                      | expected
-        UserCommand.GET_START_ADVICE | AdviceType.START_MESSAGE
-        UserCommand.GET_NEXT_ADVICE  | AdviceType.NEXT_STEP
-        UserCommand.FINISH_ADVICE    | AdviceType.DATE_INVITATION
+        UserCommand.GET_START_ADVICE | AdviceGoal.START_MESSAGE
+        UserCommand.GET_NEXT_ADVICE  | AdviceGoal.NEXT_ADVICE
+        UserCommand.FINISH_ADVICE    | AdviceGoal.DATE_INVITATION
     }
 }

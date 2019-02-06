@@ -30,7 +30,10 @@ public class TelegramConfig implements TelegramConstants {
     public TelegramFacade telegramFacade(PickupBotApi pickupBotApi) {
         Map<String, SendMessageCommand> commands = new HashMap<>(4);
         commands.put(START_COMMAND, startCommand());
-        commands.put(GET_ADVICE_COMMAND, getStartAdviceCommand(pickupBotApi));
+        commands.put(RETURN_TO_MAIN_MENU_COMMAND, mainMenuCommand());
+        commands.put(GET_MESSAGE_ADVICE_COMMAND, getStartAdviceCommand(pickupBotApi));
+        commands.put(GET_DATE_ADVICE_COMMAND, getDateAdviceCommand(pickupBotApi));
+        commands.put(GET_PROFILE_ADVICE_COMMAND, getProfileAdviceCommand(pickupBotApi));
         commands.put(GOOD_ADVICE_COMMAND, rateAdviceCommand(pickupBotApi));
         commands.put(BAD_ADVICE_COMMAND, rateAdviceCommand(pickupBotApi));
         return new TelegramFacade(Collections.unmodifiableMap(commands), illegalUserTextCommand());
@@ -42,8 +45,23 @@ public class TelegramConfig implements TelegramConstants {
     }
 
     @Bean
-    public GetStartAdviceCommand getStartAdviceCommand(PickupBotApi pickupBotApi) {
-        return new GetStartAdviceCommand(pickupBotApi);
+    public MainMenuCommand mainMenuCommand() {
+        return new MainMenuCommand();
+    }
+
+    @Bean
+    public GetMessageAdviceCommand getStartAdviceCommand(PickupBotApi pickupBotApi) {
+        return new GetMessageAdviceCommand(pickupBotApi);
+    }
+
+    @Bean
+    public GetDateAdviceCommand getDateAdviceCommand(PickupBotApi pickupBotApi) {
+        return new GetDateAdviceCommand(pickupBotApi);
+    }
+
+    @Bean
+    public GetProfileAdviceCommand getProfileAdviceCommand(PickupBotApi pickupBotApi) {
+        return new GetProfileAdviceCommand(pickupBotApi);
     }
 
     @Bean

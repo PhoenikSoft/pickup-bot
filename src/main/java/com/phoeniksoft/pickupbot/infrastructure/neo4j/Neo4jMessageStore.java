@@ -2,7 +2,7 @@ package com.phoeniksoft.pickupbot.infrastructure.neo4j;
 
 import com.phoeniksoft.pickupbot.domain.advisor.Advice;
 import com.phoeniksoft.pickupbot.domain.advisor.MessageStore;
-import com.phoeniksoft.pickupbot.domain.advisor.exception.NoNewStartAdviceForUserException;
+import com.phoeniksoft.pickupbot.domain.advisor.exception.NoNewAdviceForUserException;
 import com.phoeniksoft.pickupbot.domain.core.user.User;
 import com.phoeniksoft.pickupbot.domain.history.HistoryService;
 import lombok.AllArgsConstructor;
@@ -20,12 +20,12 @@ public class Neo4jMessageStore implements MessageStore {
     private final Random ran;
 
     @Override
-    public Advice getStartMessageForUser(String userId) {
-        Set<String> pastAdvicesIds = historyService.getPastAdvicesIds(new User(userId));
+    public Advice getStartMessageForUser(User user) {
+        Set<String> pastAdvicesIds = historyService.getPastAdvicesIds(user);
         Set<Long> pastAdvicesIdsAsLongs = pastAdvicesIds.stream().map(Long::valueOf).collect(Collectors.toSet());
         List<MessageDto> startNodes = messageRepository.getStartNodesThatWereNotUsed(pastAdvicesIdsAsLongs);
         if (startNodes.isEmpty()) {
-            throw new NoNewStartAdviceForUserException(userId);
+            throw new NoNewAdviceForUserException(user.getId());
         } else {
             return startNodes.get(ran.nextInt(startNodes.size())).toAdvice();
         }

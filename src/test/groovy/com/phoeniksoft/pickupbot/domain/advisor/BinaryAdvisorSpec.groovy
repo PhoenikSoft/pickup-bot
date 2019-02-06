@@ -1,7 +1,7 @@
 package com.phoeniksoft.pickupbot.domain.advisor
 
-import com.phoeniksoft.pickupbot.domain.advisor.exception.NoNewStartAdviceForUserException
-import com.phoeniksoft.pickupbot.domain.context.AdviceType
+import com.phoeniksoft.pickupbot.domain.advisor.exception.NoNewAdviceForUserException
+import com.phoeniksoft.pickupbot.domain.context.AdviceGoal
 import com.phoeniksoft.pickupbot.domain.context.UserAnswer
 import com.phoeniksoft.pickupbot.domain.context.UserContext
 import com.phoeniksoft.pickupbot.domain.core.user.User
@@ -31,7 +31,7 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
 
         when:
         Advice result = binaryAdvisor.getAdvice(new UserContext(
-                userIntent: AdviceType.START_MESSAGE,
+                userIntent: AdviceGoal.START_MESSAGE,
                 user: new User("testId")))
 
         then:
@@ -40,15 +40,15 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
 
     def "test get start advice with empty advice"() {
         given:
-        when(adviceStore.getStartAdviceForUser("testId")).thenThrow(NoNewStartAdviceForUserException)
+        when(adviceStore.getStartAdviceForUser("testId")).thenThrow(NoNewAdviceForUserException)
 
         when:
         binaryAdvisor.getAdvice(new UserContext(
-                userIntent: AdviceType.START_MESSAGE,
+                userIntent: AdviceGoal.START_MESSAGE,
                 user: new User("testId")))
 
         then:
-        thrown NoNewStartAdviceForUserException
+        thrown NoNewAdviceForUserException
     }
 
     def "test get default advice if unknown command"() {
@@ -57,7 +57,7 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
         when(adviceStore.getDefaultAdvice()).thenReturn(expectedAdvice)
 
         when:
-        Advice result = binaryAdvisor.getAdvice(new UserContext(userIntent: AdviceType.DATE_INVITATION))
+        Advice result = binaryAdvisor.getAdvice(new UserContext(userIntent: AdviceGoal.DATE_INVITATION))
 
         then:
         result == expectedAdvice
@@ -71,7 +71,7 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
 
         when:
         Advice result = binaryAdvisor.getAdvice(
-                new UserContext(userIntent: AdviceType.NEXT_STEP,
+                new UserContext(userIntent: AdviceGoal.NEXT_ADVICE,
                         userAnswer: UserAnswer.YES,
                         payload: ["prevAdviceId": "test"]))
 
@@ -81,7 +81,7 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
 
     def "test get next advice without user answer"() {
         when:
-        binaryAdvisor.getAdvice(new UserContext(userIntent: AdviceType.NEXT_STEP))
+        binaryAdvisor.getAdvice(new UserContext(userIntent: AdviceGoal.NEXT_ADVICE))
 
         then:
         thrown NullPointerException
@@ -94,7 +94,7 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
 
         when:
         Advice result = binaryAdvisor.getAdvice(
-                new UserContext(userIntent: AdviceType.NEXT_STEP,
+                new UserContext(userIntent: AdviceGoal.NEXT_ADVICE,
                         user: new User("testId"),
                         userAnswer: UserAnswer.YES))
 
@@ -111,7 +111,7 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
 
         when:
         Advice result = binaryAdvisor.getAdvice(
-                new UserContext(userIntent: AdviceType.NEXT_STEP,
+                new UserContext(userIntent: AdviceGoal.NEXT_ADVICE,
                         userAnswer: UserAnswer.YES,
                         payload: ["prevAdviceId": "test"]))
 

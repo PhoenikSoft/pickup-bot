@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
-import static com.phoeniksoft.pickupbot.infrastructure.telegram.utils.TelegramConstructorUtil.addKeyboardWithGetAdviceButton;
+import static com.phoeniksoft.pickupbot.infrastructure.telegram.utils.TelegramConstructorUtil.addKeyboardWithButtons;
 
 @AllArgsConstructor
 @Slf4j
@@ -21,11 +21,12 @@ public class RateAdviceCommand extends SendMessageCommand {
                 .build();
         query.getSpecificParams().put(UserQueryParams.USER_ID_PARAM, message.getChatId());
         pickupBotApi.saveUserAnswer(query);
-        if(GOOD_ADVICE_COMMAND.equals(input.getMessageText())){
+        if (GOOD_ADVICE_COMMAND.equals(input.getMessageText())) {
             message.setText(GOOD_ADVICE_ANSWER_MSG);
-        }else{
+        } else {
             message.setText(BAD_ADVICE_ANSWER_MSG);
         }
-        addKeyboardWithGetAdviceButton(message);
+        String[][] buttons = {{GET_MESSAGE_ADVICE_COMMAND}, {RETURN_TO_MAIN_MENU_COMMAND}};
+        addKeyboardWithButtons(message, buttons);
     }
 }

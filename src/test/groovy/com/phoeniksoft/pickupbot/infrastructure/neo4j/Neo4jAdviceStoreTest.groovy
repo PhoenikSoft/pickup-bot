@@ -3,7 +3,7 @@ package com.phoeniksoft.pickupbot.infrastructure.neo4j
 import com.phoeniksoft.pickupbot.common.TestData
 import com.phoeniksoft.pickupbot.domain.advisor.Advice
 import com.phoeniksoft.pickupbot.domain.advisor.NextAdviceParams
-import com.phoeniksoft.pickupbot.domain.advisor.exception.NoNewStartAdviceForUserException
+import com.phoeniksoft.pickupbot.domain.advisor.exception.NoNewAdviceForUserException
 import com.phoeniksoft.pickupbot.domain.core.user.User
 import com.phoeniksoft.pickupbot.domain.history.HistoryService
 import org.mockito.InjectMocks
@@ -125,7 +125,7 @@ class Neo4jAdviceStoreTest extends Specification implements TestData {
         neo4jAdviceStore.getStartAdviceForUser(userId)
 
         then:
-        def ex = thrown NoNewStartAdviceForUserException
+        def ex = thrown NoNewAdviceForUserException
         ex.message == "All start advices have been used for user: ${userId}"
     }
 

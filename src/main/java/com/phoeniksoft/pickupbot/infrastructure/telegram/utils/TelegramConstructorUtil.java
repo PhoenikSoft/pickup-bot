@@ -10,21 +10,26 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.phoeniksoft.pickupbot.infrastructure.telegram.TelegramConstants.GET_ADVICE_COMMAND;
+import static com.phoeniksoft.pickupbot.infrastructure.telegram.TelegramConstants.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TelegramConstructorUtil {
 
-    public static void addKeyboardWithGetAdviceButton(SendMessage message){
-        String[][] buttons = {{GET_ADVICE_COMMAND}};
+    public static void addKeyboardWithMainMenuButtons(SendMessage message) {
+        String[][] buttons = {{GET_MESSAGE_ADVICE_COMMAND, GET_DATE_ADVICE_COMMAND, GET_PROFILE_ADVICE_COMMAND}};
         addKeyboardWithButtons(message, buttons);
     }
 
-    public static void addKeyboardWithButtons(SendMessage message, String[][] buttonsLabels){
+    public static void addKeyboardWithReturnToMainMenuButton(SendMessage message) {
+        String[][] buttons = {{RETURN_TO_MAIN_MENU_COMMAND}};
+        addKeyboardWithButtons(message, buttons);
+    }
+
+    public static void addKeyboardWithButtons(SendMessage message, String[][] buttonsLabels) {
         List<KeyboardRow> keyboard = new ArrayList<>();
-        for(String[] row : buttonsLabels){
+        for (String[] row : buttonsLabels) {
             KeyboardRow keyboardRow = new KeyboardRow();
-            for(String label : row){
+            for (String label : row) {
                 keyboardRow.add(new KeyboardButton(label));
             }
             keyboard.add(keyboardRow);

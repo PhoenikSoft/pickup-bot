@@ -33,8 +33,8 @@ public class Neo4jConfig {
     private String graphenedbPass;
 
     @Bean
-    public AdviceStore adviceStore(Neo4jAdviceRepository repository) {
-        return new Neo4jAdviceStore(repository);
+    public AdviceStore adviceStore(Neo4jAdviceRepository repository, HistoryService historyService) {
+        return new Neo4jAdviceStore(repository, historyService, new Random());
     }
 
     @Bean

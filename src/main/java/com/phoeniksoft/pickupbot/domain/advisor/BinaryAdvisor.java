@@ -18,8 +18,14 @@ public class BinaryAdvisor implements Advisor {
             case START_MESSAGE:
                 adviceForUser = getBeginAdvice(context);
                 break;
-            case NEXT_STEP:
+            case NEXT_ADVICE:
                 adviceForUser = getNextAdvice(context);
+                break;
+            case DATE_ADVICE:
+                adviceForUser = getDateAdvice(context);
+                break;
+            case PROFILE_IMPROVEMENT:
+                adviceForUser = getProfileAdvice(context);
                 break;
             default:
                 adviceForUser = getDefaultAdvice();
@@ -29,7 +35,15 @@ public class BinaryAdvisor implements Advisor {
     }
 
     private Advice getBeginAdvice(UserContext context) {
-        return messageStore.getStartMessageForUser(context.getUser().getId());
+        return messageStore.getStartMessageForUser(context.getUser());
+    }
+
+    private Advice getDateAdvice(UserContext context) {
+        return adviceStore.getAdviceByTypeForUser(AdviceType.DATE, context.getUser());
+    }
+
+    private Advice getProfileAdvice(UserContext context) {
+        return adviceStore.getAdviceByTypeForUser(AdviceType.PROFILE, context.getUser());
     }
 
     private Advice getNextAdvice(UserContext context) {

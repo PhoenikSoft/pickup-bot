@@ -1,5 +1,7 @@
 package com.phoeniksoft.pickupbot.domain.advisor;
 
+import com.phoeniksoft.pickupbot.domain.core.user.User;
+
 import javax.annotation.PostConstruct;
 import java.util.*;
 
@@ -36,6 +38,11 @@ public class InMemoryAdviceStore implements AdviceStore {
     @Override
     public Optional<Advice> getById(String id) {
         return Optional.ofNullable(advicesById.get(id));
+    }
+
+    @Override
+    public Advice getAdviceByTypeForUser(AdviceType type, User user) {
+        return null;
     }
 
     @Override
