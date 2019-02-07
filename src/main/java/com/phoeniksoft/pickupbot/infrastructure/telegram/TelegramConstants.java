@@ -3,14 +3,14 @@ package com.phoeniksoft.pickupbot.infrastructure.telegram;
 public interface TelegramConstants {
 
     String START_COMMAND = "/start";
-    String GET_ADVICE_COMMAND = "Get advice";
-    String GOOD_ADVICE_COMMAND = "Good advice";
-    String BAD_ADVICE_COMMAND = "Bad advice";
+    String GET_ADVICE_COMMAND = "Получить совет U+1F525";
+    String GOOD_ADVICE_COMMAND = "Одобряю U+1F44D";
+    String BAD_ADVICE_COMMAND = "Так себе U+1F44E";
 
-    String GREETING_MSG = "Welcome to the Pickup Bot!\nThis bot can give you some messages that you can use during your conversations with girls.\nJust push the button below and we can start!";
-    String ALL_MESSAGES_SHOWN_MSG = "We have shown you all our messages :(\nPlease wait for our update...";
-    String GOOD_ADVICE_ANSWER_MSG = "Yeah, we have cooler advice";
-    String BAD_ADVICE_ANSWER_MSG = "Ok, we could do it better";
-    String UNRECOGNIZABLE_USER_ANSWER_ERROR = "Cannot analyze your answer. Please choose some option from the list below.";
-    String UNEXPECTED_ERROR = "Some error occurred. Please try again.";
+    String GREETING_MSG = "Привет!\n\n Я Пикап Бот и моя миссия - упростить процесс знакомства с девушками в интернете. Всегда всё в твоих руках, просто я дам тебе пару подсказок. Давай начнём! U+1F680";
+    String ALL_MESSAGES_SHOWN_MSG = "Кажется это пока всё, что у меня есть. Сейчас советы будут повторяться, но жди обновлений U+1F5E3";
+    String GOOD_ADVICE_ANSWER_MSG = "Круто! Дальше всё в твоих руках U+270A";
+    String BAD_ADVICE_ANSWER_MSG = "Окей, я мог бы и лучше постараться U+1F62C";
+    String UNRECOGNIZABLE_USER_ANSWER_ERROR = "Эта команда мне неизвестна U+1F916";
+    String UNEXPECTED_ERROR = "Возникла ошибка, попробуй ещё раз U+1F527";
 }
