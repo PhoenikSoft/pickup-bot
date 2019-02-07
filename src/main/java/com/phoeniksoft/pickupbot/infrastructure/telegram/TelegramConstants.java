@@ -15,6 +15,7 @@ public interface TelegramConstants {
     String ALL_MESSAGES_SHOWN_MSG = "We have shown you all our messages :(\nPlease wait for our update...";
     String GOOD_ADVICE_ANSWER_MSG = "Yeah, we have cooler advice";
     String BAD_ADVICE_ANSWER_MSG = "Ok, we could do it better";
+    String THANKS_FOR_FEEDBACK_MSG = "Thanks for your feedback!";
     String UNRECOGNIZABLE_USER_ANSWER_ERROR = "Cannot analyze your answer. Please choose some option from the list below.";
     String UNEXPECTED_ERROR = "Some error occurred. Please try again.";
 }

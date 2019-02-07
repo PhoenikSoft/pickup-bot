@@ -3,7 +3,9 @@ package com.phoeniksoft.pickupbot.infrastructure.telegram.utils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
@@ -14,6 +16,8 @@ import static com.phoeniksoft.pickupbot.infrastructure.telegram.TelegramConstant
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TelegramConstructorUtil {
+
+    private static final String CALLBACK_ANSWER_DELIMITER = "_";
 
     public static void addKeyboardWithMainMenuButtons(SendMessage message) {
         String[][] buttons = {{GET_MESSAGE_ADVICE_COMMAND, GET_DATE_ADVICE_COMMAND, GET_PROFILE_ADVICE_COMMAND}};
@@ -35,6 +39,30 @@ public class TelegramConstructorUtil {
             keyboard.add(keyboardRow);
         }
         addKeyboardWithListButtons(message, keyboard);
+    }
+
+    public static void addInlineKeyboardWithButtons(SendMessage message, InlineButtonData[][] buttons) {
+        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+        for (InlineButtonData[] buttonRow : buttons) {
+            List<InlineKeyboardButton> rowInline = new ArrayList<>();
+            for (InlineButtonData buttonData : buttonRow) {
+                rowInline.add(new InlineKeyboardButton()
+                        .setText(buttonData.getLabel())
+                        .setCallbackData(buttonData.getData()));
+            }
+            rowsInline.add(rowInline);
+        }
+        markupInline.setKeyboard(rowsInline);
+        message.setReplyMarkup(markupInline);
+    }
+
+    public static String constructCallbackAnswer(String adviceId, String userAnswer) {
+        return adviceId + CALLBACK_ANSWER_DELIMITER + userAnswer;
+    }
+
+    public static String[] parseCallbackAnswer(String answer) {
+        return answer.split(CALLBACK_ANSWER_DELIMITER);
     }
 
     private static void addKeyboardWithListButtons(SendMessage message, List<KeyboardRow> keyboard) {

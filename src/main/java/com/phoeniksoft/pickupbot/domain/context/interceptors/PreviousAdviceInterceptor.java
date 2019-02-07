@@ -3,6 +3,7 @@ package com.phoeniksoft.pickupbot.domain.context.interceptors;
 import com.phoeniksoft.pickupbot.domain.context.UserContext;
 import com.phoeniksoft.pickupbot.domain.core.UserCommand;
 import com.phoeniksoft.pickupbot.domain.core.UserQuery;
+import com.phoeniksoft.pickupbot.domain.core.UserQueryParams;
 import com.phoeniksoft.pickupbot.domain.history.HistoryService;
 import lombok.AllArgsConstructor;
 
@@ -17,6 +18,11 @@ public class PreviousAdviceInterceptor implements ContextInterceptor {
 
     @Override
     public void fillContext(UserContext context, UserQuery userQuery) {
+        if (userQuery.getSpecificParams().containsKey(UserQueryParams.ADVICE_ID_PARAM)) {
+            context.getPayload().put(PREV_ADVICE_PARAM, userQuery.getSpecificParams().get(UserQueryParams.ADVICE_ID_PARAM));
+            return;
+        }
+
         Optional<String> lastAdviceId = historyService.getLastAdviceId(context.getUser());
         if (lastAdviceId.isPresent()) {
             context.getPayload().put(PREV_ADVICE_PARAM, lastAdviceId.get());

@@ -28,15 +28,20 @@ public class TelegramConfig implements TelegramConstants {
 
     @Bean
     public TelegramFacade telegramFacade(PickupBotApi pickupBotApi) {
-        Map<String, SendMessageCommand> commands = new HashMap<>(4);
-        commands.put(START_COMMAND, startCommand());
-        commands.put(RETURN_TO_MAIN_MENU_COMMAND, mainMenuCommand());
-        commands.put(GET_MESSAGE_ADVICE_COMMAND, getStartAdviceCommand(pickupBotApi));
-        commands.put(GET_DATE_ADVICE_COMMAND, getDateAdviceCommand(pickupBotApi));
-        commands.put(GET_PROFILE_ADVICE_COMMAND, getProfileAdviceCommand(pickupBotApi));
-        commands.put(GOOD_ADVICE_COMMAND, rateAdviceCommand(pickupBotApi));
-        commands.put(BAD_ADVICE_COMMAND, rateAdviceCommand(pickupBotApi));
-        return new TelegramFacade(Collections.unmodifiableMap(commands), illegalUserTextCommand());
+        Map<String, SendMessageCommand> oneMessageCommands = new HashMap<>(2);
+        oneMessageCommands.put(START_COMMAND, startCommand());
+        oneMessageCommands.put(RETURN_TO_MAIN_MENU_COMMAND, mainMenuCommand());
+        Map<String, SendMessageListCommand> manyMessagesCommands = new HashMap<>(3);
+        manyMessagesCommands.put(GET_MESSAGE_ADVICE_COMMAND, getStartAdviceCommand(pickupBotApi));
+        manyMessagesCommands.put(GET_DATE_ADVICE_COMMAND, getDateAdviceCommand(pickupBotApi));
+        manyMessagesCommands.put(GET_PROFILE_ADVICE_COMMAND, getProfileAdviceCommand(pickupBotApi));
+        Map<String, QueryCallbackCommand> callbackCommands = new HashMap<>(2);
+        callbackCommands.put(GOOD_ADVICE_COMMAND, rateAdviceCommand(pickupBotApi));
+        callbackCommands.put(BAD_ADVICE_COMMAND, rateAdviceCommand(pickupBotApi));
+        return new TelegramFacade(Collections.unmodifiableMap(oneMessageCommands),
+                Collections.unmodifiableMap(manyMessagesCommands),
+                Collections.unmodifiableMap(callbackCommands),
+                illegalUserTextCommand());
     }
 
     @Bean
