@@ -26,13 +26,18 @@ class UserInfoInterceptorSpec extends Specification {
     def "test if user param wasn't filled"() {
         given:
         def context = new UserContext()
-        def query = UserQuery.builder().build()
+        def query = UserQuery.builder().specificParams(new UserQueryParams(params)).build()
 
         when:
         def acceptable = userInfoInterceptor.isAcceptable(context, query)
 
         then:
-        !acceptable
+        acceptable == expected
+
+        where:
+        params                                          | expected
+        [:]                                             | false
+        [(UserQueryParams.USER_ID_PARAM): "testUserId"] | true
     }
 
     def "test if user has already exist in storage"() {

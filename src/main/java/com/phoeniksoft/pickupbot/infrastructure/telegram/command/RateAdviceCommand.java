@@ -3,17 +3,22 @@ package com.phoeniksoft.pickupbot.infrastructure.telegram.command;
 import com.phoeniksoft.pickupbot.domain.core.*;
 import lombok.AllArgsConstructor;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static com.phoeniksoft.pickupbot.infrastructure.telegram.utils.TelegramConstructorUtil.parseCallbackAnswer;
 
 @AllArgsConstructor
-public class RateAdviceCommand implements QueryCallbackCommand<AnswerCallbackQuery> {
+public class RateAdviceCommand implements QueryCallbackCommand<List<BotApiMethod>> {
 
     private final PickupBotApi pickupBotApi;
 
     @Override
-    public AnswerCallbackQuery handleCallback(CallbackQuery callbackQuery) {
+    public List<BotApiMethod> handleCallback(CallbackQuery callbackQuery) {
         String[] parsedAnswer = parseCallbackAnswer(callbackQuery.getData());
 
         UserQuery query = UserQuery.builder()
@@ -25,8 +30,12 @@ public class RateAdviceCommand implements QueryCallbackCommand<AnswerCallbackQue
 
         pickupBotApi.saveUserAnswer(query);
 
-        return new AnswerCallbackQuery()
+        AnswerCallbackQuery thanksAlert = new AnswerCallbackQuery()
                 .setCallbackQueryId(callbackQuery.getId())
                 .setText(THANKS_FOR_FEEDBACK_MSG);
+        EditMessageReplyMarkup removeInlineKeyboardCommand = new EditMessageReplyMarkup()
+                .setChatId(callbackQuery.getMessage().getChatId())
+                .setMessageId(callbackQuery.getMessage().getMessageId());
+        return Arrays.asList(thanksAlert, removeInlineKeyboardCommand);
     }
 }

@@ -7,12 +7,16 @@ import com.phoeniksoft.pickupbot.domain.core.UserQueryParams;
 import com.phoeniksoft.pickupbot.domain.history.HistoryService;
 import lombok.AllArgsConstructor;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static com.phoeniksoft.pickupbot.domain.context.UserContext.ContextPayload.PREV_ADVICE_PARAM;
 
 @AllArgsConstructor
 public class PreviousAdviceInterceptor implements ContextInterceptor {
+
+    private static final List<UserCommand> ACCEPTABLE_COMMANDS = Arrays.asList(UserCommand.GET_NEXT_ADVICE, UserCommand.RATE_ADVICE);
 
     private final HistoryService historyService;
 
@@ -32,7 +36,7 @@ public class PreviousAdviceInterceptor implements ContextInterceptor {
     @Override
     public boolean isAcceptable(UserContext context, UserQuery userQuery) {
         return userQuery.getCommand() != null &&
-                userQuery.getCommand() != UserCommand.GET_START_ADVICE &&
+                ACCEPTABLE_COMMANDS.contains(userQuery.getCommand()) &&
                 context.getUser() != null;
     }
 }

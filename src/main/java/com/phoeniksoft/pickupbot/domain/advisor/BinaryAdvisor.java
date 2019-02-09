@@ -1,5 +1,6 @@
 package com.phoeniksoft.pickupbot.domain.advisor;
 
+import com.phoeniksoft.pickupbot.domain.advisor.exception.NoPrevAdviceFoundException;
 import com.phoeniksoft.pickupbot.domain.context.UserContext;
 import lombok.AllArgsConstructor;
 
@@ -50,7 +51,7 @@ public class BinaryAdvisor implements Advisor {
         requireNonNull(context.getUserAnswer());
         Object prevAdviceId = context.getPayload().get(UserContext.ContextPayload.PREV_ADVICE_PARAM);
         if (prevAdviceId == null) {
-            return getBeginAdvice(context);
+            throw new NoPrevAdviceFoundException();
         }
 
         NextAdviceParams params = new NextAdviceParams();
