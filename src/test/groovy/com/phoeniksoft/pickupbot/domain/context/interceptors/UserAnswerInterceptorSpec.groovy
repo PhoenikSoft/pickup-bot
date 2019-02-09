@@ -21,12 +21,6 @@ class UserAnswerInterceptorSpec extends Specification {
                 .build()
 
         when:
-        def acceptable = userAnswerInterceptor.isAcceptable(context, query)
-
-        then:
-        acceptable
-
-        when:
         userAnswerInterceptor.fillContext(context, query)
 
         then:
@@ -37,12 +31,6 @@ class UserAnswerInterceptorSpec extends Specification {
         given:
         def context = new UserContext()
         def query = UserQuery.builder().message().build()
-
-        when:
-        def acceptable = userAnswerInterceptor.isAcceptable(context, query)
-
-        then:
-        !acceptable
 
         when:
         userAnswerInterceptor.fillContext(context, query)
@@ -57,15 +45,32 @@ class UserAnswerInterceptorSpec extends Specification {
         def query = UserQuery.builder().message(new UserMessage("invalid")).build()
 
         when:
-        def acceptable = userAnswerInterceptor.isAcceptable(context, query)
-
-        then:
-        !acceptable
-
-        when:
         userAnswerInterceptor.fillContext(context, query)
 
         then:
         thrown CannotRecognizeUserAnswerException
+    }
+
+    def "test acceptable method of interceptor"() {
+        given:
+        def context = new UserContext()
+        def userMessage = message ? new UserMessage(message) : null
+        def query = UserQuery.builder().command(command).message(userMessage).build()
+
+        when:
+        def acceptable = userAnswerInterceptor.isAcceptable(context, query)
+
+        then:
+        acceptable == expected
+
+        where:
+        command                        | message | expected
+        null                           | "msg"   | false
+        UserCommand.GET_START_ADVICE   | "msg"   | false
+        UserCommand.GET_NEXT_ADVICE    | "msg"   | true
+        UserCommand.GET_DATE_ADVICE    | "msg"   | false
+        UserCommand.GET_PROFILE_ADVICE | "msg"   | false
+        UserCommand.RATE_ADVICE        | "msg"   | true
+        UserCommand.RATE_ADVICE        | null    | false
     }
 }

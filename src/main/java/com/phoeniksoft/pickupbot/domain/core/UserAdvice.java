@@ -9,7 +9,7 @@ import java.util.Map;
 @Data
 public final class UserAdvice {
 
-    private static final String ADVICE_ID_PARAM = "adviceId";
+    public static final String ADVICE_ID_PARAM = "adviceId";
 
     private final String msg;
 

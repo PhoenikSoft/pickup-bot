@@ -1,5 +1,7 @@
 package com.phoeniksoft.pickupbot.domain.advisor;
 
+import com.phoeniksoft.pickupbot.domain.core.user.User;
+
 import javax.annotation.PostConstruct;
 import java.util.*;
 
@@ -12,8 +14,6 @@ public class InMemoryAdviceStore implements AdviceStore {
     private Map<String, Advice> advicesById;
 
     private List<Advice> startAdvices;
-
-    private final Random ran = new Random();
 
     @PostConstruct
     private void init() {
@@ -41,19 +41,14 @@ public class InMemoryAdviceStore implements AdviceStore {
     }
 
     @Override
+    public Advice getAdviceByTypeForUser(AdviceType type, User user) {
+        return null;
+    }
+
+    @Override
     public Optional<Advice> getNextAdvice(String prevAdviceId, NextAdviceParams params) {
         return getById(prevAdviceId)
                 .flatMap(a -> Optional.of((Advice) a.getPayload().getOrDefault(NEXT_ADVICE_PARAM, DEFAULT_ADVICE)));
-    }
-
-    @Override
-    public Optional<Advice> getStartAdvice() {
-        return Optional.ofNullable(startAdvices.get(ran.nextInt(startAdvices.size())));
-    }
-
-    @Override
-    public Advice getStartAdviceForUser(String userId) {
-        return getStartAdvice().orElse(null);
     }
 
     @Override

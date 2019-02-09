@@ -11,15 +11,12 @@ import java.util.Optional;
 @Repository
 public interface Neo4jAdviceRepository extends Neo4jRepository<AdviceDto, Long> {
 
+    @Query("MATCH (n:Advice) WHERE any(tag IN n.tags WHERE tag = {0}) AND NOT id(n) IN {1} RETURN n")
+    List<AdviceDto> getNodesByTagThatWereNotUsed(String tag, Collection<Long> ids);
+
     @Query("MATCH (e:Advice)-[r:goto]->(dest) WHERE id(e) = {0} AND r.helped = {1} RETURN dest")
     Optional<AdviceDto> getNextAdviceByUserAnswer(Long prevNodeId, String userAnswer);
 
-    @Query("MATCH (e:BEGIN) RETURN e")
-    List<AdviceDto> getAllStartNodes();
-
-    @Query("MATCH (n:BEGIN) WHERE NOT ID(n) IN {0} RETURN n")
-    List<AdviceDto> getStartNodesThatWerentUsed(Collection<Long> ids);
-
-    @Query("MATCH (e:Default) RETURN e LIMIT 1")
+    @Query("MATCH (e:Advice:Default) RETURN e LIMIT 1")
     AdviceDto getDefaultNode();
 }

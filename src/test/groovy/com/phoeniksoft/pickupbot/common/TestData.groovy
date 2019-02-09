@@ -3,6 +3,7 @@ package com.phoeniksoft.pickupbot.common
 import com.phoeniksoft.pickupbot.infrastructure.jpa.history.UserHistoryDto
 import com.phoeniksoft.pickupbot.infrastructure.jpa.user.UserDto
 import com.phoeniksoft.pickupbot.infrastructure.neo4j.AdviceDto
+import com.phoeniksoft.pickupbot.infrastructure.neo4j.MessageDto
 
 import java.time.LocalDateTime
 
@@ -24,6 +25,14 @@ trait TestData {
         dto
     }
 
+    List validDtoList(int num = 1, Closure createObj){
+        def result = []
+        1.upto(num) {
+            result << createObj(it)
+        }
+        result
+    }
+
     AdviceDto validAdviceDto(long id = 1, String msg = 'testMsg') {
         def dto = new AdviceDto()
         dto.id = id
@@ -31,11 +40,10 @@ trait TestData {
         dto
     }
 
-    List<AdviceDto> validAdviceDtoList(int num = 1) {
-        def result = []
-        1.upto(num) {
-            result << validAdviceDto(it, "testMsg${it}")
-        }
-        result
+    MessageDto validMessageDto(long id = 1, String msg = 'testMsg') {
+        def dto = new MessageDto()
+        dto.id = id
+        dto.msg = msg
+        dto
     }
 }

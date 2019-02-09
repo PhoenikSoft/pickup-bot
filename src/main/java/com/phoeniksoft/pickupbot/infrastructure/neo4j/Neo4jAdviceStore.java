@@ -2,8 +2,9 @@ package com.phoeniksoft.pickupbot.infrastructure.neo4j;
 
 import com.phoeniksoft.pickupbot.domain.advisor.Advice;
 import com.phoeniksoft.pickupbot.domain.advisor.AdviceStore;
+import com.phoeniksoft.pickupbot.domain.advisor.AdviceType;
 import com.phoeniksoft.pickupbot.domain.advisor.NextAdviceParams;
-import com.phoeniksoft.pickupbot.domain.advisor.exception.NoNewStartAdviceForUserException;
+import com.phoeniksoft.pickupbot.domain.advisor.exception.NoNewAdviceForUserException;
 import com.phoeniksoft.pickupbot.domain.core.user.User;
 import com.phoeniksoft.pickupbot.domain.history.HistoryService;
 import lombok.AllArgsConstructor;
@@ -27,30 +28,23 @@ public class Neo4jAdviceStore implements AdviceStore {
     }
 
     @Override
+    public Advice getAdviceByTypeForUser(AdviceType type, User user) {
+        Set<String> pastAdvicesIds = historyService.getPastAdvicesIds(user);
+        Set<Long> pastAdvicesIdsAsLongs = pastAdvicesIds.stream().map(Long::valueOf).collect(Collectors.toSet());
+
+        List<AdviceDto> newNodes = adviceRepository.getNodesByTagThatWereNotUsed(type.name().toLowerCase(), pastAdvicesIdsAsLongs);
+        if (newNodes.isEmpty()) {
+            throw new NoNewAdviceForUserException(user.getId());
+        } else {
+            return newNodes.get(ran.nextInt(newNodes.size())).toAdvice();
+        }
+    }
+
+    @Override
     public Optional<Advice> getNextAdvice(String prevAdviceId, NextAdviceParams params) {
         Object userAnswer = params.get(NextAdviceParams.USER_ANSWER_PARAM);
         return adviceRepository.getNextAdviceByUserAnswer(Long.valueOf(prevAdviceId), userAnswer.toString())
                 .map(AdviceDto::toAdvice);
-    }
-
-    @Override
-    public Optional<Advice> getStartAdvice() {
-        List<AdviceDto> allStartNodes = adviceRepository.getAllStartNodes();
-        return allStartNodes.isEmpty()
-                ? Optional.empty()
-                : Optional.of(allStartNodes.get(ran.nextInt(allStartNodes.size())).toAdvice());
-    }
-
-    @Override
-    public Advice getStartAdviceForUser(String userId) {
-        Set<String> pastAdvicesIds = historyService.getPastAdvicesIds(new User(userId));
-        Set<Long> pastAdvicesIdsAsLongs = pastAdvicesIds.stream().map(Long::valueOf).collect(Collectors.toSet());
-        List<AdviceDto> startNodes = adviceRepository.getStartNodesThatWerentUsed(pastAdvicesIdsAsLongs);
-        if (startNodes.isEmpty()) {
-            throw new NoNewStartAdviceForUserException(userId);
-        } else {
-            return startNodes.get(ran.nextInt(startNodes.size())).toAdvice();
-        }
     }
 
     @Override

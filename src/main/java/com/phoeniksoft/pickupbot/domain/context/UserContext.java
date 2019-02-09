@@ -3,7 +3,6 @@ package com.phoeniksoft.pickupbot.domain.context;
 import com.phoeniksoft.pickupbot.domain.core.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import java.util.HashMap;
 
@@ -11,7 +10,7 @@ import java.util.HashMap;
 @NoArgsConstructor
 public class UserContext {
 
-    private AdviceType userIntent;
+    private AdviceGoal userIntent;
 
     private UserAnswer userAnswer;
 

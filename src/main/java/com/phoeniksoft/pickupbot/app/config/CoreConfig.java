@@ -3,6 +3,7 @@ package com.phoeniksoft.pickupbot.app.config;
 import com.phoeniksoft.pickupbot.domain.advisor.AdviceStore;
 import com.phoeniksoft.pickupbot.domain.advisor.Advisor;
 import com.phoeniksoft.pickupbot.domain.advisor.BinaryAdvisor;
+import com.phoeniksoft.pickupbot.domain.advisor.MessageStore;
 import com.phoeniksoft.pickupbot.domain.context.ContextFiller;
 import com.phoeniksoft.pickupbot.domain.core.PickupBotApi;
 import com.phoeniksoft.pickupbot.domain.core.PickupBotFacadeImpl;
@@ -23,8 +24,8 @@ public class CoreConfig {
     }
 
     @Bean
-    public Advisor advisor(AdviceStore adviceStore) {
-        return new BinaryAdvisor(adviceStore);
+    public Advisor advisor(AdviceStore adviceStore, MessageStore messageStore) {
+        return new BinaryAdvisor(adviceStore, messageStore);
     }
 
 }
