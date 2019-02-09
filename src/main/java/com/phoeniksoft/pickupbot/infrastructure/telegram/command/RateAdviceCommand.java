@@ -2,30 +2,40 @@ package com.phoeniksoft.pickupbot.infrastructure.telegram.command;
 
 import com.phoeniksoft.pickupbot.domain.core.*;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import static com.phoeniksoft.pickupbot.infrastructure.telegram.utils.TelegramConstructorUtil.addKeyboardWithGetAdviceButton;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.phoeniksoft.pickupbot.infrastructure.telegram.utils.TelegramConstructorUtil.parseCallbackAnswer;
 
 @AllArgsConstructor
-@Slf4j
-public class RateAdviceCommand extends SendMessageCommand {
+public class RateAdviceCommand implements QueryCallbackCommand<List<BotApiMethod>> {
 
     private final PickupBotApi pickupBotApi;
 
     @Override
-    protected void fillMessage(SendMessage message, TelegramCommandInput input) {
+    public List<BotApiMethod> handleCallback(CallbackQuery callbackQuery) {
+        String[] parsedAnswer = parseCallbackAnswer(callbackQuery.getData());
+
         UserQuery query = UserQuery.builder()
                 .command(UserCommand.RATE_ADVICE)
-                .message(new UserMessage(input.getMessageText()))
+                .message(new UserMessage(parsedAnswer[1]))
                 .build();
-        query.getSpecificParams().put(UserQueryParams.USER_ID_PARAM, message.getChatId());
+        query.getSpecificParams().put(UserQueryParams.USER_ID_PARAM, callbackQuery.getFrom().getId());
+        query.getSpecificParams().put(UserQueryParams.ADVICE_ID_PARAM, parsedAnswer[0]);
+
         pickupBotApi.saveUserAnswer(query);
-        if(GOOD_ADVICE_COMMAND.equals(input.getMessageText())){
-            message.setText(GOOD_ADVICE_ANSWER_MSG);
-        }else{
-            message.setText(BAD_ADVICE_ANSWER_MSG);
-        }
-        addKeyboardWithGetAdviceButton(message);
+
+        AnswerCallbackQuery thanksAlert = new AnswerCallbackQuery()
+                .setCallbackQueryId(callbackQuery.getId())
+                .setText(THANKS_FOR_FEEDBACK_MSG);
+        EditMessageReplyMarkup removeInlineKeyboardCommand = new EditMessageReplyMarkup()
+                .setChatId(callbackQuery.getMessage().getChatId())
+                .setMessageId(callbackQuery.getMessage().getMessageId());
+        return Arrays.asList(thanksAlert, removeInlineKeyboardCommand);
     }
 }

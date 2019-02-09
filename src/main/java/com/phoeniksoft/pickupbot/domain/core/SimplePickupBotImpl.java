@@ -14,9 +14,6 @@ public class SimplePickupBotImpl implements PickupBotApi {
     public UserAdvice getAdvice(UserQuery userQuery) {
         Advice response;
         switch (userQuery.getCommand()) {
-            case GET_START_ADVICE:
-                response = adviceStore.getStartAdvice().orElse(adviceStore.getDefaultAdvice());
-                break;
             case GET_NEXT_ADVICE:
                 Object prevAdviceId = userQuery.getSpecificParams().get("prevAdviceId");
                 response = adviceStore.getNextAdvice(prevAdviceId.toString(), new NextAdviceParams())

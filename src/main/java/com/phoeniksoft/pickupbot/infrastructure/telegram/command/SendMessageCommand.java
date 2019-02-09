@@ -3,7 +3,7 @@ package com.phoeniksoft.pickupbot.infrastructure.telegram.command;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
-import static com.phoeniksoft.pickupbot.infrastructure.telegram.utils.TelegramConstructorUtil.addKeyboardWithGetAdviceButton;
+import static com.phoeniksoft.pickupbot.infrastructure.telegram.utils.TelegramConstructorUtil.addKeyboardWithReturnToMainMenuButton;
 
 @Slf4j
 public abstract class SendMessageCommand implements TelegramCommand<SendMessage> {
@@ -19,7 +19,7 @@ public abstract class SendMessageCommand implements TelegramCommand<SendMessage>
             log.error(String.format(ERROR_MSG, input.getChatId(), input.getMessageText()), ex);
             message = newSendMessage(input);
             message.setText(UNEXPECTED_ERROR);
-            addKeyboardWithGetAdviceButton(message);
+            addKeyboardWithReturnToMainMenuButton(message);
         }
         return message;
     }

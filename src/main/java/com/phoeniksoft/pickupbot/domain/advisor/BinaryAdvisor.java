@@ -1,5 +1,6 @@
 package com.phoeniksoft.pickupbot.domain.advisor;
 
+import com.phoeniksoft.pickupbot.domain.advisor.exception.NoPrevAdviceFoundException;
 import com.phoeniksoft.pickupbot.domain.context.UserContext;
 import lombok.AllArgsConstructor;
 
@@ -9,6 +10,7 @@ import static java.util.Objects.requireNonNull;
 public class BinaryAdvisor implements Advisor {
 
     private final AdviceStore adviceStore;
+    private final MessageStore messageStore;
 
     @Override
     public Advice getAdvice(UserContext context) {
@@ -17,8 +19,14 @@ public class BinaryAdvisor implements Advisor {
             case START_MESSAGE:
                 adviceForUser = getBeginAdvice(context);
                 break;
-            case NEXT_STEP:
+            case NEXT_ADVICE:
                 adviceForUser = getNextAdvice(context);
+                break;
+            case DATE_ADVICE:
+                adviceForUser = getDateAdvice(context);
+                break;
+            case PROFILE_IMPROVEMENT:
+                adviceForUser = getProfileAdvice(context);
                 break;
             default:
                 adviceForUser = getDefaultAdvice();
@@ -28,14 +36,22 @@ public class BinaryAdvisor implements Advisor {
     }
 
     private Advice getBeginAdvice(UserContext context) {
-        return adviceStore.getStartAdviceForUser(context.getUser().getId());
+        return messageStore.getStartMessageForUser(context.getUser());
+    }
+
+    private Advice getDateAdvice(UserContext context) {
+        return adviceStore.getAdviceByTypeForUser(AdviceType.DATE, context.getUser());
+    }
+
+    private Advice getProfileAdvice(UserContext context) {
+        return adviceStore.getAdviceByTypeForUser(AdviceType.PROFILE, context.getUser());
     }
 
     private Advice getNextAdvice(UserContext context) {
         requireNonNull(context.getUserAnswer());
         Object prevAdviceId = context.getPayload().get(UserContext.ContextPayload.PREV_ADVICE_PARAM);
         if (prevAdviceId == null) {
-            return getBeginAdvice(context);
+            throw new NoPrevAdviceFoundException();
         }
 
         NextAdviceParams params = new NextAdviceParams();

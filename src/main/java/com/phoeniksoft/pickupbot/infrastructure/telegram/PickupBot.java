@@ -4,12 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -40,12 +41,14 @@ public class PickupBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        Optional<SendMessage> sendMessage = telegramFacade.handleMessage(update);
-        if (sendMessage.isPresent()) {
-            try {
-                execute(sendMessage.get());
-            } catch (TelegramApiException e) {
-                log.error("Telegram api error", e);
+        List<Optional<? extends BotApiMethod>> methodsForExecute = telegramFacade.handleUpdate(update);
+        for (Optional<? extends BotApiMethod> botApiMethod : methodsForExecute) {
+            if (botApiMethod.isPresent()) {
+                try {
+                    execute(botApiMethod.get());
+                } catch (TelegramApiException e) {
+                    log.error("Telegram api error", e);
+                }
             }
         }
     }
