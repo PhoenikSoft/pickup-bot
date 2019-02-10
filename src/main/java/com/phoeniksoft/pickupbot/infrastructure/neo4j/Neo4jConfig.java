@@ -1,7 +1,6 @@
 package com.phoeniksoft.pickupbot.infrastructure.neo4j;
 
 import com.phoeniksoft.pickupbot.domain.advisor.AdviceStore;
-import com.phoeniksoft.pickupbot.domain.advisor.MessageStore;
 import com.phoeniksoft.pickupbot.domain.history.HistoryService;
 import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -35,11 +34,6 @@ public class Neo4jConfig {
     @Bean
     public AdviceStore adviceStore(Neo4jAdviceRepository repository, HistoryService historyService) {
         return new Neo4jAdviceStore(repository, historyService, new Random());
-    }
-
-    @Bean
-    public MessageStore messageStore(Neo4jMessageRepository repository, HistoryService historyService) {
-        return new Neo4jMessageStore(repository, historyService, new Random());
     }
 
     @Bean(name = "getSessionFactory")

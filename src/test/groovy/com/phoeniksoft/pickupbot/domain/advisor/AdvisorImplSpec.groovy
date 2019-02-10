@@ -15,13 +15,11 @@ import spock.lang.Specification
 import static org.mockito.ArgumentMatchers.eq
 import static org.mockito.Mockito.when
 
-class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
+class AdvisorImplSpec extends Specification implements AdvisorTestData {
     @Mock
     AdviceStore adviceStore
-    @Mock
-    MessageStore messageStore
     @InjectMocks
-    BinaryAdvisor binaryAdvisor
+    AdvisorImpl advisor
 
     def setup() {
         MockitoAnnotations.initMocks(this)
@@ -30,10 +28,10 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
     def "test get start advice with not empty advice"() {
         given:
         def expectedAdvice = validAdvice()
-        when(messageStore.getStartMessageForUser(new User("testId"))).thenReturn(expectedAdvice)
+        when(adviceStore.getAdviceByTypeForUser(AdviceType.MESSAGE, new User("testId"))).thenReturn(expectedAdvice)
 
         when:
-        Advice result = binaryAdvisor.getAdvice(new UserContext(
+        Advice result = advisor.getAdvice(new UserContext(
                 userIntent: AdviceGoal.START_MESSAGE,
                 user: new User("testId")))
 
@@ -43,10 +41,10 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
 
     def "test get start advice with empty advice"() {
         given:
-        when(messageStore.getStartMessageForUser(new User("testId"))).thenThrow(NoNewAdviceForUserException)
+        when(adviceStore.getAdviceByTypeForUser(AdviceType.MESSAGE, new User("testId"))).thenThrow(NoNewAdviceForUserException)
 
         when:
-        binaryAdvisor.getAdvice(new UserContext(
+        advisor.getAdvice(new UserContext(
                 userIntent: AdviceGoal.START_MESSAGE,
                 user: new User("testId")))
 
@@ -60,7 +58,7 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
         when(adviceStore.getDefaultAdvice()).thenReturn(expectedAdvice)
 
         when:
-        Advice result = binaryAdvisor.getAdvice(new UserContext(userIntent: AdviceGoal.DATE_INVITATION))
+        Advice result = advisor.getAdvice(new UserContext(userIntent: AdviceGoal.DATE_INVITATION))
 
         then:
         result == expectedAdvice
@@ -73,7 +71,7 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
                 .thenReturn(Optional.of(expectedAdvice))
 
         when:
-        Advice result = binaryAdvisor.getAdvice(
+        Advice result = advisor.getAdvice(
                 new UserContext(userIntent: AdviceGoal.NEXT_ADVICE,
                         userAnswer: UserAnswer.YES,
                         payload: ["prevAdviceId": "test"]))
@@ -84,7 +82,7 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
 
     def "test get next advice without user answer"() {
         when:
-        binaryAdvisor.getAdvice(new UserContext(userIntent: AdviceGoal.NEXT_ADVICE))
+        advisor.getAdvice(new UserContext(userIntent: AdviceGoal.NEXT_ADVICE))
 
         then:
         thrown NullPointerException
@@ -92,7 +90,7 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
 
     def "test get next advice without payload"() {
         when:
-        binaryAdvisor.getAdvice(
+        advisor.getAdvice(
                 new UserContext(userIntent: AdviceGoal.NEXT_ADVICE,
                         user: new User("testId"),
                         userAnswer: UserAnswer.YES))
@@ -110,7 +108,7 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
         when(adviceStore.getDefaultAdvice()).thenReturn(expectedAdvice)
 
         when:
-        Advice result = binaryAdvisor.getAdvice(
+        Advice result = advisor.getAdvice(
                 new UserContext(userIntent: AdviceGoal.NEXT_ADVICE,
                         userAnswer: UserAnswer.YES,
                         payload: ["prevAdviceId": "test"]))
@@ -125,7 +123,7 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
         when(adviceStore.getAdviceByTypeForUser(AdviceType.DATE, new User("testId"))).thenReturn(expectedAdvice)
 
         when:
-        Advice result = binaryAdvisor.getAdvice(new UserContext(
+        Advice result = advisor.getAdvice(new UserContext(
                 userIntent: AdviceGoal.DATE_ADVICE,
                 user: new User("testId")))
 
@@ -139,7 +137,7 @@ class BinaryAdvisorSpec extends Specification implements AdvisorTestData {
         when(adviceStore.getAdviceByTypeForUser(AdviceType.PROFILE, new User("testId"))).thenReturn(expectedAdvice)
 
         when:
-        Advice result = binaryAdvisor.getAdvice(new UserContext(
+        Advice result = advisor.getAdvice(new UserContext(
                 userIntent: AdviceGoal.PROFILE_IMPROVEMENT,
                 user: new User("testId")))
 

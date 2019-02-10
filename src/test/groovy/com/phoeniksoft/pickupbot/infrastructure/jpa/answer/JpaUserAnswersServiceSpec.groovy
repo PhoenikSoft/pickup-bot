@@ -14,7 +14,7 @@ import spock.lang.Specification
 
 import static org.mockito.Mockito.when
 
-class JpaUserAnswersServiceTest extends Specification implements TestData {
+class JpaUserAnswersServiceSpec extends Specification implements TestData {
     @Mock
     UserAnswersRepository userAnswersRepository
     @Mock

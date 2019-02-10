@@ -30,7 +30,7 @@ public class GetDateAdviceCommand extends SendMessageListCommand {
         } catch (NoNewAdviceForUserException ex) {
             log.info(ex.getMessage());
             SendMessage noMessagesMessage = newSendMessage(input).setText(ALL_MESSAGES_SHOWN_MSG);
-            String[][] buttons = {{GET_PROFILE_ADVICE_COMMAND}, {RETURN_TO_MAIN_MENU_COMMAND}};
+            String[][] buttons = {{GET_DATE_ADVICE_COMMAND}, {RETURN_TO_MAIN_MENU_COMMAND}};
             addKeyboardWithButtons(noMessagesMessage, buttons);
             return Arrays.asList(noMessagesMessage);
         }

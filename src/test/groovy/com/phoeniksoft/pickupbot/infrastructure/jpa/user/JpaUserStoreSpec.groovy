@@ -8,7 +8,7 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import static org.mockito.Mockito.*
 
-class JpaUserStoreTest extends Specification implements TestData {
+class JpaUserStoreSpec extends Specification implements TestData {
     @Mock
     UserRepository userRepository
     @InjectMocks

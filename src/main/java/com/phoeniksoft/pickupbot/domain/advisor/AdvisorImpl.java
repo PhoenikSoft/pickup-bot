@@ -7,17 +7,16 @@ import lombok.AllArgsConstructor;
 import static java.util.Objects.requireNonNull;
 
 @AllArgsConstructor
-public class BinaryAdvisor implements Advisor {
+public class AdvisorImpl implements Advisor {
 
     private final AdviceStore adviceStore;
-    private final MessageStore messageStore;
 
     @Override
     public Advice getAdvice(UserContext context) {
         Advice adviceForUser;
         switch (context.getUserIntent()) {
             case START_MESSAGE:
-                adviceForUser = getBeginAdvice(context);
+                adviceForUser = getBeginMessageAdvice(context);
                 break;
             case NEXT_ADVICE:
                 adviceForUser = getNextAdvice(context);
@@ -35,8 +34,8 @@ public class BinaryAdvisor implements Advisor {
         return adviceForUser;
     }
 
-    private Advice getBeginAdvice(UserContext context) {
-        return messageStore.getStartMessageForUser(context.getUser());
+    private Advice getBeginMessageAdvice(UserContext context) {
+        return adviceStore.getAdviceByTypeForUser(AdviceType.MESSAGE, context.getUser());
     }
 
     private Advice getDateAdvice(UserContext context) {
