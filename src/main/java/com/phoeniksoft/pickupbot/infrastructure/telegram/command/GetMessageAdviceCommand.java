@@ -30,9 +30,10 @@ public class GetMessageAdviceCommand extends SendMessageListCommand {
         } catch (NoNewAdviceForUserException ex) {
             log.info(ex.getMessage());
             SendMessage noMessagesMessage = newSendMessage(input).setText(ALL_MESSAGES_SHOWN_MSG);
+            SendMessage oldAdviceMessage = newSendMessage(input).setText(ex.getOldAdvice().getMsg());
             String[][] buttons = {{GET_MESSAGE_ADVICE_COMMAND}, {RETURN_TO_MAIN_MENU_COMMAND}};
-            addKeyboardWithButtons(noMessagesMessage, buttons);
-            return Arrays.asList(noMessagesMessage);
+            addKeyboardWithButtons(oldAdviceMessage, buttons);
+            return Arrays.asList(noMessagesMessage, oldAdviceMessage);
         }
 
         SendMessage adviceMessage = newSendMessage(input).setText(advice.getMsg());
