@@ -20,7 +20,7 @@ public class TelegramConstructorUtil {
     private static final String CALLBACK_ANSWER_DELIMITER = "_";
 
     public static void addKeyboardWithMainMenuButtons(SendMessage message) {
-        String[][] buttons = {{GET_MESSAGE_ADVICE_COMMAND, GET_DATE_ADVICE_COMMAND, GET_PROFILE_ADVICE_COMMAND}};
+        String[][] buttons = {{GET_MESSAGE_ADVICE_COMMAND}, {GET_DATE_ADVICE_COMMAND}, {GET_PROFILE_ADVICE_COMMAND}};
         addKeyboardWithButtons(message, buttons);
     }
 
