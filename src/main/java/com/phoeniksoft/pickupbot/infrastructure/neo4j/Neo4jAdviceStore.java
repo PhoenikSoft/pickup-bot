@@ -32,9 +32,12 @@ public class Neo4jAdviceStore implements AdviceStore {
         Set<String> pastAdvicesIds = historyService.getPastAdvicesIds(user);
         Set<Long> pastAdvicesIdsAsLongs = pastAdvicesIds.stream().map(Long::valueOf).collect(Collectors.toSet());
 
-        List<AdviceDto> newNodes = adviceRepository.getNodesByTagThatWereNotUsed(type.name().toLowerCase(), pastAdvicesIdsAsLongs);
+        String tag = type.name().toLowerCase();
+        List<AdviceDto> newNodes = adviceRepository.getNodesByTagThatWereNotUsed(tag, pastAdvicesIdsAsLongs);
         if (newNodes.isEmpty()) {
-            throw new NoNewAdviceForUserException(user.getId());
+            List<AdviceDto> allAdvicesByTag = adviceRepository.getNodesByTag(tag);
+            Advice oldRandomAdvice = allAdvicesByTag.get(ran.nextInt(allAdvicesByTag.size())).toAdvice();
+            throw new NoNewAdviceForUserException(user.getId(), oldRandomAdvice);
         } else {
             return newNodes.get(ran.nextInt(newNodes.size())).toAdvice();
         }

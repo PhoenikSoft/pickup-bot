@@ -73,6 +73,9 @@ class Neo4jAdviceStoreSpec extends Specification implements TestData {
         def userId = "testId"
         when(historyService.getPastAdvicesIds(new User(userId))).thenReturn(["4"] as Set<String>)
         when(adviceRepository.getNodesByTagThatWereNotUsed("profile", [4L] as Set<Long>)).thenReturn([])
+        when(adviceRepository.getNodesByTag("profile"))
+                .thenReturn(validDtoList(2, { id -> validAdviceDto(id, "testMsg${id}") }) as List<AdviceDto>)
+        when(ran.nextInt(2)).thenReturn(1)
 
         when:
         neo4jAdviceStore.getAdviceByTypeForUser(AdviceType.PROFILE, new User(userId))
@@ -80,6 +83,8 @@ class Neo4jAdviceStoreSpec extends Specification implements TestData {
         then:
         def ex = thrown NoNewAdviceForUserException
         ex.message == "All advices have been used for user: ${userId}"
+        ex.oldAdvice.id == '2'
+        ex.oldAdvice.msg == 'testMsg2'
     }
 
     def "test get Next Advice"() {

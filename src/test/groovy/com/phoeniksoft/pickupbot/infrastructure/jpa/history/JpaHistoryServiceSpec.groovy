@@ -12,7 +12,7 @@ import spock.lang.Specification
 
 import static org.mockito.Mockito.when
 
-class JpaHistoryServiceTest extends Specification implements TestData {
+class JpaHistoryServiceSpec extends Specification implements TestData {
     @Mock
     UserHistoryRepository userHistoryRepository
     @Mock

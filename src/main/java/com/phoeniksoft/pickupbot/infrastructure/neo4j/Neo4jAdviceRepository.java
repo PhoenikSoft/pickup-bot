@@ -11,6 +11,9 @@ import java.util.Optional;
 @Repository
 public interface Neo4jAdviceRepository extends Neo4jRepository<AdviceDto, Long> {
 
+    @Query("MATCH (n:Advice) WHERE any(tag IN n.tags WHERE tag = {0}) RETURN n")
+    List<AdviceDto> getNodesByTag(String tag);
+
     @Query("MATCH (n:Advice) WHERE any(tag IN n.tags WHERE tag = {0}) AND NOT id(n) IN {1} RETURN n")
     List<AdviceDto> getNodesByTagThatWereNotUsed(String tag, Collection<Long> ids);
 

@@ -8,7 +8,6 @@ import com.phoeniksoft.pickupbot.domain.core.UserQuery;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class UserAnswerInterceptor implements ContextInterceptor {
 
@@ -18,8 +17,8 @@ public class UserAnswerInterceptor implements ContextInterceptor {
     public void fillContext(UserContext context, UserQuery userQuery) throws CannotRecognizeUserAnswerException {
         UserAnswer userAnswer;
         try {
-            userAnswer = UserAnswer.getInstance(userQuery.getMessage().getValue());
-        } catch (NoSuchElementException ex) {
+            userAnswer = UserAnswer.valueOf(userQuery.getMessage().getValue());
+        } catch (IllegalArgumentException ex) {
             throw new CannotRecognizeUserAnswerException("Cannot recognize user answer", ex);
         }
         context.setUserAnswer(userAnswer);
