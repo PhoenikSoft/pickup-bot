@@ -26,7 +26,7 @@ public class ScheduledTasks {
     }
 
     @Scheduled(fixedRate = 1740000)
-    public void reportCurrentTime() {
+    public void hookNeo4j() {
         adviceStore.getNodesCount();
         log.info("Scheduled task is executed. {}", dateFormat.format(new Date()));
     }
