@@ -25,7 +25,7 @@ public class ScheduledTasks {
         this.adviceStore = adviceStore;
     }
 
-    @Scheduled(fixedRate = 120000)
+    @Scheduled(fixedRate = 1740000)
     public void reportCurrentTime() {
         adviceStore.getNodesCount();
         log.info("Scheduled task is executed. {}", dateFormat.format(new Date()));
