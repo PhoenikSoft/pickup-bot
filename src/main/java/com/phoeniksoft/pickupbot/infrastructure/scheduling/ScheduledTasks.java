@@ -27,9 +27,8 @@ public class ScheduledTasks {
 
     @Scheduled(fixedRate = 120000)
     public void reportCurrentTime() {
-        Advice defaultAdvice = adviceStore.getDefaultAdvice();
-        boolean isSuccessfulRequest = defaultAdvice != null;
-        log.info("Scheduled task is executed : " + isSuccessfulRequest + ". {}", dateFormat.format(new Date()));
+        adviceStore.getNodesCount();
+        log.info("Scheduled task is executed. {}", dateFormat.format(new Date()));
     }
 
 
