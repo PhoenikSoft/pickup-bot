@@ -55,4 +55,9 @@ public class InMemoryAdviceStore implements AdviceStore {
     public Advice getDefaultAdvice() {
         return DEFAULT_ADVICE;
     }
+
+    @Override
+    public Long getNodesCount() {
+        return (long) startAdvices.size();
+    }
 }

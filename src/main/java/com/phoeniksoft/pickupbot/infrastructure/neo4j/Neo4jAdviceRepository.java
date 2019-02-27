@@ -22,4 +22,7 @@ public interface Neo4jAdviceRepository extends Neo4jRepository<AdviceDto, Long> 
 
     @Query("MATCH (e:Advice:Default) RETURN e LIMIT 1")
     AdviceDto getDefaultNode();
+
+    @Query("MATCH (n) RETURN count(*)")
+    Long getNodesCount();
 }
