@@ -13,4 +13,6 @@ public interface AdviceStore {
     Optional<Advice> getNextAdvice(String prevAdviceId, NextAdviceParams params);
 
     Advice getDefaultAdvice();
+
+    Long getNodesCount();
 }

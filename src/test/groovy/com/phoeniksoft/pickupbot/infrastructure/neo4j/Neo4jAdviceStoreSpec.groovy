@@ -123,4 +123,16 @@ class Neo4jAdviceStoreSpec extends Specification implements TestData {
         result.id == '1'
         result.msg == 'testMsg'
     }
+
+    def "test get Nodes Count"() {
+        given:
+        def expectedNodesCount = 1L
+        when(adviceRepository.getNodesCount()).thenReturn(expectedNodesCount)
+
+        when:
+        def nodesCount = neo4jAdviceStore.getNodesCount()
+
+        then:
+        expectedNodesCount == nodesCount
+    }
 }

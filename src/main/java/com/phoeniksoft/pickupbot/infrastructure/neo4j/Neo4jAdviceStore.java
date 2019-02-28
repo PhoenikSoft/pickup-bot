@@ -54,4 +54,9 @@ public class Neo4jAdviceStore implements AdviceStore {
     public Advice getDefaultAdvice() {
         return adviceRepository.getDefaultNode().toAdvice();
     }
+
+    @Override
+    public Long getNodesCount() {
+        return adviceRepository.getNodesCount();
+    }
 }
