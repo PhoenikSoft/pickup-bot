@@ -1,7 +1,10 @@
 package com.phoeniksoft.pickupbot.infrastructure.telegram;
 
 import com.phoeniksoft.pickupbot.domain.core.PickupBotApi;
+import com.phoeniksoft.pickupbot.domain.core.user.UserStore;
+import com.phoeniksoft.pickupbot.domain.notification.NotificationService;
 import com.phoeniksoft.pickupbot.infrastructure.telegram.command.*;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.notification.TelegramNotificationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -77,5 +80,10 @@ public class TelegramConfig implements TelegramConstants {
     @Bean
     public IllegalUserTextCommand illegalUserTextCommand() {
         return new IllegalUserTextCommand();
+    }
+
+    @Bean
+    public NotificationService notificationService(UserStore userStore, PickupBot pickupBot) {
+        return new TelegramNotificationService(userStore, pickupBot);
     }
 }
