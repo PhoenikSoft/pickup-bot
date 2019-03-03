@@ -22,7 +22,7 @@ public class ScheduledTasks {
 
     @Scheduled(fixedRate = 1740000)
     public void hookNeo4j() {
+        log.info("Scheduled task is executing. {}", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         adviceStore.getNodesCount();
-        log.info("Scheduled task is executed. {}", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     }
 }
