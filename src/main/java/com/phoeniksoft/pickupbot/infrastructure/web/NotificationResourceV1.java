@@ -2,6 +2,8 @@ package com.phoeniksoft.pickupbot.infrastructure.web;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping("/v1/notifications")
+@RequestMapping("/api/v1/notifications")
 public abstract class NotificationResourceV1 {
+
+    static final String ALL_USERS_NOTIFIED_MSG = "All users have notified!";
 }

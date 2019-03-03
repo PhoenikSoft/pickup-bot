@@ -18,6 +18,6 @@ public class NotificationResource extends NotificationResourceV1 {
     @PutMapping
     public String notifyAllUsers(@RequestBody @Valid GlobalMessageDto globalMessageDto) {
         notificationService.notifyAll(globalMessageDto.toGlobalMessage());
-        return "All users have notified!";
+        return ALL_USERS_NOTIFIED_MSG;
     }
 }
