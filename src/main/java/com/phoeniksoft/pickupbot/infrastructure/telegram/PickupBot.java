@@ -1,5 +1,6 @@
 package com.phoeniksoft.pickupbot.infrastructure.telegram;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@RequiredArgsConstructor
 public class PickupBot extends TelegramLongPollingBot {
 
     @Value("${telegram.name}")
@@ -22,11 +24,7 @@ public class PickupBot extends TelegramLongPollingBot {
     @Value("${telegram.token}")
     private String botToken;
 
-    private TelegramFacade telegramFacade;
-
-    public PickupBot(TelegramFacade telegramFacade) {
-        this.telegramFacade = telegramFacade;
-    }
+    private final TelegramFacade telegramFacade;
 
     @PostConstruct
     private void startBot() {
