@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+/**
+ * REST controller that gives entry points for notifying users.
+ */
 @RestController
 @AllArgsConstructor
 public class NotificationResource extends NotificationResourceV1 {
