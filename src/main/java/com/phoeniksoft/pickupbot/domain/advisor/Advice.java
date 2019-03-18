@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.HashMap;
 
+/**
+ * Represents core module advice object that used in module interactions.
+ */
 @Data
 @Builder
 public final class Advice {

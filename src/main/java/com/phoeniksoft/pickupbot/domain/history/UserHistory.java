@@ -6,6 +6,9 @@ import lombok.Value;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents history logging record.
+ */
 @Value
 @Builder
 public class UserHistory {

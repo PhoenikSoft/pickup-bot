@@ -13,6 +13,9 @@ import java.util.Optional;
 
 import static com.phoeniksoft.pickupbot.domain.context.UserContext.ContextPayload.PREV_ADVICE_PARAM;
 
+/**
+ * Fills context with previously given advice if possible.
+ */
 @AllArgsConstructor
 public class PreviousAdviceInterceptor implements ContextInterceptor {
 

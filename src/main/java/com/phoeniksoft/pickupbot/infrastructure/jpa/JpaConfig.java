@@ -26,6 +26,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
+/**
+ * Bean configuration of the JPA and Postgres database connection.
+ */
 @Configuration
 @EnableJpaRepositories(transactionManagerRef = "postgreTransactionManager")
 @Slf4j

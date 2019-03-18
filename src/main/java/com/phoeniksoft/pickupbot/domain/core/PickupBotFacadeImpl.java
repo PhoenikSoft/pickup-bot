@@ -6,11 +6,11 @@ import com.phoeniksoft.pickupbot.domain.context.ContextFiller;
 import com.phoeniksoft.pickupbot.domain.context.UserContext;
 import com.phoeniksoft.pickupbot.domain.history.HistoryService;
 import com.phoeniksoft.pickupbot.domain.history.UserAnswersService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.inject.Inject;
-
+/**
+ * Service that delegates complex advice work to other components.
+ */
 public class PickupBotFacadeImpl implements PickupBotApi {
 
     private final ContextFiller contextFiller;

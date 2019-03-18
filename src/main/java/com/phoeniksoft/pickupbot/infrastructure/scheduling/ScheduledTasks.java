@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Set up scheduled asynchronous tasks.
+ */
 @Component
 @Slf4j
 public class ScheduledTasks {

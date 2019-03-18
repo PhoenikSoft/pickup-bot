@@ -9,6 +9,9 @@ import com.phoeniksoft.pickupbot.domain.core.UserQuery;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Identifies answer given by user if possible.
+ */
 public class UserAnswerInterceptor implements ContextInterceptor {
 
     private static final List<UserCommand> ACCEPTABLE_COMMANDS = Arrays.asList(UserCommand.GET_NEXT_ADVICE, UserCommand.RATE_ADVICE);
