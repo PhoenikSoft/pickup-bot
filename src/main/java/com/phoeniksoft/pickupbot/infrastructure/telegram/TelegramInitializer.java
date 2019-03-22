@@ -4,6 +4,9 @@ import org.telegram.telegrambots.ApiContextInitializer;
 
 import javax.annotation.PostConstruct;
 
+/**
+ * Component that initializes Telegram Bot context (session, webhook).
+ */
 public class TelegramInitializer {
 
     @PostConstruct

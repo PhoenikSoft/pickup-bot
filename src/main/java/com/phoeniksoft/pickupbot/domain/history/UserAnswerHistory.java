@@ -6,6 +6,9 @@ import lombok.Value;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents answer for some question by user.
+ */
 @Value
 @Builder
 public class UserAnswerHistory {

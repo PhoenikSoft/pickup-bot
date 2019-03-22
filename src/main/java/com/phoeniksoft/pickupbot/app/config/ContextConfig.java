@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Bean configuration of the context filler module.
+ */
 @Configuration
 public class ContextConfig {
 

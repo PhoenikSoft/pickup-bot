@@ -7,6 +7,9 @@ import com.phoeniksoft.pickupbot.domain.core.UserQuery;
 
 import java.util.Optional;
 
+/**
+ * Identifies what is the intent of the user.
+ */
 public class UserCommandInterceptor implements ContextInterceptor {
 
     @Override

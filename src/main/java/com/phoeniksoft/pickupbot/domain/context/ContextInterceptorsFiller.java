@@ -4,9 +4,12 @@ import com.phoeniksoft.pickupbot.domain.context.interceptors.ContextInterceptor;
 import com.phoeniksoft.pickupbot.domain.core.UserQuery;
 import lombok.AllArgsConstructor;
 
-import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Service fills context using Chain of responsibility pattern using interceptors.
+ * Each interceptor fills context with some peace of information.
+ */
 @AllArgsConstructor
 public class ContextInterceptorsFiller implements ContextFiller {
 

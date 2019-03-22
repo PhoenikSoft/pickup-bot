@@ -16,13 +16,28 @@ import java.util.stream.Collectors;
 
 import static com.phoeniksoft.pickupbot.infrastructure.telegram.utils.TelegramConstructorUtil.parseCallbackAnswer;
 
+/**
+ * The facade component that identifies the type of the user input and delegate handling to the appropriate command.
+ */
 @AllArgsConstructor
 @Slf4j
 public class TelegramFacade {
 
+    /**
+     * Commands that return only one response message.
+     */
     private final Map<String, SendMessageCommand> oneMessageCommands;
+    /**
+     * Commands that return few response messages.
+     */
     private final Map<String, SendMessageListCommand> fewMessagesCommands;
+    /**
+     * Command that handle user responses from callback pinned buttons.
+     */
     private final Map<String, QueryCallbackCommand> callbackCommands;
+    /**
+     * Command that is executed when user answer cannot be identified.
+     */
     private final IllegalUserTextCommand defaultCommand;
 
     public List<Optional<? extends BotApiMethod>> handleUpdate(Update update) {

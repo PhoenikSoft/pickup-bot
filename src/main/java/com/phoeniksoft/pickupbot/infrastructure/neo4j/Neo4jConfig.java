@@ -14,6 +14,9 @@ import org.springframework.data.neo4j.transaction.Neo4jTransactionManager;
 
 import java.util.Random;
 
+/**
+ * Bean configuration of the Neo4j database.
+ */
 @Configuration
 @ComponentScan
 @EnableNeo4jRepositories(

@@ -14,6 +14,9 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Root telegram component that starts and registers Bot. Also receives updates from users and handles them.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class PickupBot extends TelegramLongPollingBot {

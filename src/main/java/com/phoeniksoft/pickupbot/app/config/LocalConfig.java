@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+/**
+ * Testing bean config. Use it if you want to test application and avoid infrastructure layer dependencies.
+ */
 @Configuration
 @Profile("dev")
 public class LocalConfig {

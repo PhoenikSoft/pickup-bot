@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 
 import java.util.Optional;
 
+/**
+ * Find current user and fills context with it.
+ */
 @AllArgsConstructor
 public class UserInfoInterceptor implements ContextInterceptor {
 

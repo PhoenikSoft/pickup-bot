@@ -6,6 +6,9 @@ import lombok.Data;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents advice that is returned for user by core.
+ */
 @Data
 public final class UserAdvice {
 

@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Set up scheduled asynchronous tasks.
+ */
 @Component
 @Slf4j
 public class ScheduledTasks {
@@ -20,6 +23,10 @@ public class ScheduledTasks {
         this.adviceStore = adviceStore;
     }
 
+    /**
+     * We should hook and call Neo4j database, because it sleeps every 30 minutes on Heroku
+     * that causes database interaction errors.
+     */
     @Scheduled(fixedRate = 1740000)
     public void hookNeo4j() {
         log.info("Scheduled task is executing. {}", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
