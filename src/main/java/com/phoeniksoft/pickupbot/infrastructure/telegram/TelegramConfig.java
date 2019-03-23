@@ -1,9 +1,18 @@
 package com.phoeniksoft.pickupbot.infrastructure.telegram;
 
 import com.phoeniksoft.pickupbot.domain.core.PickupBotApi;
+import com.phoeniksoft.pickupbot.domain.core.UserCommand;
 import com.phoeniksoft.pickupbot.domain.core.user.UserStore;
 import com.phoeniksoft.pickupbot.domain.notification.NotificationService;
-import com.phoeniksoft.pickupbot.infrastructure.telegram.command.*;
+import com.phoeniksoft.pickupbot.domain.notification.Topic;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.GetAdviceCommand;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.IllegalUserTextCommand;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.MainMenuCommand;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.QueryCallbackCommand;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.RateAdviceCommand;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.SendMessageCommand;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.SendMessageListCommand;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.StartCommand;
 import com.phoeniksoft.pickupbot.infrastructure.telegram.notification.TelegramNotificationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,9 +47,9 @@ public class TelegramConfig implements TelegramConstants {
         oneMessageCommands.put(START_COMMAND, startCommand());
         oneMessageCommands.put(RETURN_TO_MAIN_MENU_COMMAND, mainMenuCommand());
         Map<String, SendMessageListCommand> manyMessagesCommands = new HashMap<>(3);
-        manyMessagesCommands.put(GET_MESSAGE_ADVICE_COMMAND, getStartAdviceCommand(pickupBotApi));
-        manyMessagesCommands.put(GET_DATE_ADVICE_COMMAND, getDateAdviceCommand(pickupBotApi));
-        manyMessagesCommands.put(GET_PROFILE_ADVICE_COMMAND, getProfileAdviceCommand(pickupBotApi));
+        manyMessagesCommands.put(GET_MESSAGE_ADVICE_COMMAND, startAdviceCommand(pickupBotApi));
+        manyMessagesCommands.put(GET_DATE_ADVICE_COMMAND, dateAdviceCommand(pickupBotApi));
+        manyMessagesCommands.put(GET_PROFILE_ADVICE_COMMAND, profileAdviceCommand(pickupBotApi));
         Map<String, QueryCallbackCommand> callbackCommands = new HashMap<>(2);
         callbackCommands.put(GOOD_ADVICE_COMMAND, rateAdviceCommand(pickupBotApi));
         callbackCommands.put(BAD_ADVICE_COMMAND, rateAdviceCommand(pickupBotApi));
@@ -61,18 +70,21 @@ public class TelegramConfig implements TelegramConstants {
     }
 
     @Bean
-    public GetMessageAdviceCommand getStartAdviceCommand(PickupBotApi pickupBotApi) {
-        return new GetMessageAdviceCommand(pickupBotApi);
+    public GetAdviceCommand startAdviceCommand(PickupBotApi pickupBotApi) {
+        return new GetAdviceCommand(pickupBotApi,
+                new GetAdviceCommand.CommandConfig(UserCommand.GET_START_ADVICE, GET_MESSAGE_ADVICE_COMMAND, Topic.MESSAGE));
     }
 
     @Bean
-    public GetDateAdviceCommand getDateAdviceCommand(PickupBotApi pickupBotApi) {
-        return new GetDateAdviceCommand(pickupBotApi);
+    public GetAdviceCommand dateAdviceCommand(PickupBotApi pickupBotApi) {
+        return new GetAdviceCommand(pickupBotApi,
+                new GetAdviceCommand.CommandConfig(UserCommand.GET_DATE_ADVICE, GET_DATE_ADVICE_COMMAND, Topic.DATE));
     }
 
     @Bean
-    public GetProfileAdviceCommand getProfileAdviceCommand(PickupBotApi pickupBotApi) {
-        return new GetProfileAdviceCommand(pickupBotApi);
+    public GetAdviceCommand profileAdviceCommand(PickupBotApi pickupBotApi) {
+        return new GetAdviceCommand(pickupBotApi,
+                new GetAdviceCommand.CommandConfig(UserCommand.GET_PROFILE_ADVICE, GET_PROFILE_ADVICE_COMMAND, Topic.PROFILE));
     }
 
     @Bean

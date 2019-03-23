@@ -11,8 +11,13 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static com.phoeniksoft.pickupbot.infrastructure.telegram.TelegramConstants.*;
+import static com.phoeniksoft.pickupbot.infrastructure.telegram.TelegramConstants.GET_DATE_ADVICE_COMMAND;
+import static com.phoeniksoft.pickupbot.infrastructure.telegram.TelegramConstants.GET_MESSAGE_ADVICE_COMMAND;
+import static com.phoeniksoft.pickupbot.infrastructure.telegram.TelegramConstants.GET_PROFILE_ADVICE_COMMAND;
+import static com.phoeniksoft.pickupbot.infrastructure.telegram.TelegramConstants.RETURN_TO_MAIN_MENU_COMMAND;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TelegramConstructorUtil {
@@ -57,8 +62,8 @@ public class TelegramConstructorUtil {
         message.setReplyMarkup(markupInline);
     }
 
-    public static String constructCallbackAnswer(String adviceId, String userAnswer) {
-        return adviceId + CALLBACK_ANSWER_DELIMITER + userAnswer;
+    public static String constructCallbackAnswer(String...dataPieces) {
+        return Stream.of(dataPieces).collect(Collectors.joining(CALLBACK_ANSWER_DELIMITER));
     }
 
     public static String[] parseCallbackAnswer(String answer) {

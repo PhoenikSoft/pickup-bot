@@ -1,7 +1,11 @@
 package com.phoeniksoft.pickupbot.infrastructure.telegram.command;
 
 import com.phoeniksoft.pickupbot.domain.context.UserAnswer;
-import com.phoeniksoft.pickupbot.domain.core.*;
+import com.phoeniksoft.pickupbot.domain.core.PickupBotApi;
+import com.phoeniksoft.pickupbot.domain.core.UserCommand;
+import com.phoeniksoft.pickupbot.domain.core.UserMessage;
+import com.phoeniksoft.pickupbot.domain.core.UserQuery;
+import com.phoeniksoft.pickupbot.domain.core.UserQueryParams;
 import lombok.AllArgsConstructor;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
