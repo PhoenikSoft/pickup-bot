@@ -3,10 +3,13 @@ package com.phoeniksoft.pickupbot.infrastructure.jpa;
 import com.phoeniksoft.pickupbot.domain.core.user.UserStore;
 import com.phoeniksoft.pickupbot.domain.history.HistoryService;
 import com.phoeniksoft.pickupbot.domain.history.UserAnswersService;
+import com.phoeniksoft.pickupbot.domain.notification.SubscriptionService;
 import com.phoeniksoft.pickupbot.infrastructure.jpa.answer.JpaUserAnswersService;
 import com.phoeniksoft.pickupbot.infrastructure.jpa.answer.UserAnswersRepository;
 import com.phoeniksoft.pickupbot.infrastructure.jpa.history.JpaHistoryService;
 import com.phoeniksoft.pickupbot.infrastructure.jpa.history.UserHistoryRepository;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.notification.JpaSubscriptionService;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.notification.UserSubscriptionRepository;
 import com.phoeniksoft.pickupbot.infrastructure.jpa.user.JpaUserStore;
 import com.phoeniksoft.pickupbot.infrastructure.jpa.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +53,12 @@ public class JpaConfig {
                                                  UserRepository userRepository,
                                                  UserHistoryRepository userHistoryRepository) {
         return new JpaUserAnswersService(userAnswersRepository, userRepository, userHistoryRepository);
+    }
+
+    @Bean
+    public SubscriptionService subscriptionService(UserSubscriptionRepository userSubscriptionRepository,
+                                                   UserRepository userRepository) {
+        return new JpaSubscriptionService(userSubscriptionRepository, userRepository);
     }
 
     @Primary

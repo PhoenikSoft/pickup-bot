@@ -15,16 +15,16 @@ public class JpaUserStore implements UserStore {
 
     @Override
     public Optional<User> findById(String id) {
-        return userRepository.findByTelegramId(id).map(UserDto::toUser);
+        return userRepository.findByTelegramId(id).map(UserDto::toTelegramUser);
     }
 
     @Override
     public List<User> getAll(){
-        return userRepository.findAll().stream().map(UserDto::toUser).collect(Collectors.toList());
+        return userRepository.findAll().stream().map(UserDto::toTelegramUser).collect(Collectors.toList());
     }
 
     @Override
     public User save(User user) {
-        return userRepository.save(UserDto.of(user)).toUser();
+        return userRepository.save(UserDto.of(user)).toTelegramUser();
     }
 }
