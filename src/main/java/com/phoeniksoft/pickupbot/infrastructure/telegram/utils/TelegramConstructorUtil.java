@@ -2,7 +2,10 @@ package com.phoeniksoft.pickupbot.infrastructure.telegram.utils;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -62,12 +65,28 @@ public class TelegramConstructorUtil {
         message.setReplyMarkup(markupInline);
     }
 
-    public static String constructCallbackAnswer(String...dataPieces) {
-        return Stream.of(dataPieces).collect(Collectors.joining(CALLBACK_ANSWER_DELIMITER));
+    /**
+     * This data will be sent to the callback inline button. The first parameter is mandatory
+     */
+    public static String constructCallbackAnswer(String commandName, String... dataPieces) {
+        return Stream.concat(Stream.of(commandName), Stream.of(dataPieces))
+                .collect(Collectors.joining(CALLBACK_ANSWER_DELIMITER));
     }
 
     public static String[] parseCallbackAnswer(String answer) {
         return answer.split(CALLBACK_ANSWER_DELIMITER);
+    }
+
+    public static AnswerCallbackQuery thanksAlert(CallbackQuery callbackQuery, String thanksMsg) {
+        return new AnswerCallbackQuery()
+                .setCallbackQueryId(callbackQuery.getId())
+                .setText(thanksMsg);
+    }
+
+    public static EditMessageReplyMarkup removeInlineButtonsCommand(CallbackQuery callbackQuery) {
+        return new EditMessageReplyMarkup()
+                .setChatId(callbackQuery.getMessage().getChatId())
+                .setMessageId(callbackQuery.getMessage().getMessageId());
     }
 
     private static void addKeyboardWithListButtons(SendMessage message, List<KeyboardRow> keyboard) {

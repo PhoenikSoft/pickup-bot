@@ -21,5 +21,6 @@ public class UserContext {
     public final class ContextPayload extends HashMap<String, Object> {
 
         public static final String PREV_ADVICE_PARAM = "prevAdviceId";
+        public static final String TOPIC_PARAM = "topic";
     }
 }

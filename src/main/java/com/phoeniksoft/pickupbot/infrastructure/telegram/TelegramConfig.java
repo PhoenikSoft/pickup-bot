@@ -13,6 +13,7 @@ import com.phoeniksoft.pickupbot.infrastructure.telegram.command.RateAdviceComma
 import com.phoeniksoft.pickupbot.infrastructure.telegram.command.SendMessageCommand;
 import com.phoeniksoft.pickupbot.infrastructure.telegram.command.SendMessageListCommand;
 import com.phoeniksoft.pickupbot.infrastructure.telegram.command.StartCommand;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.TopicSubscribeCommand;
 import com.phoeniksoft.pickupbot.infrastructure.telegram.notification.TelegramNotificationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,6 +54,7 @@ public class TelegramConfig implements TelegramConstants {
         Map<String, QueryCallbackCommand> callbackCommands = new HashMap<>(2);
         callbackCommands.put(GOOD_ADVICE_COMMAND, rateAdviceCommand(pickupBotApi));
         callbackCommands.put(BAD_ADVICE_COMMAND, rateAdviceCommand(pickupBotApi));
+        callbackCommands.put(SUBSCRIBE_COMMAND, topicSubscribeCommand(pickupBotApi));
         return new TelegramFacade(Collections.unmodifiableMap(oneMessageCommands),
                 Collections.unmodifiableMap(manyMessagesCommands),
                 Collections.unmodifiableMap(callbackCommands),
@@ -90,6 +92,11 @@ public class TelegramConfig implements TelegramConstants {
     @Bean
     public RateAdviceCommand rateAdviceCommand(PickupBotApi pickupBotApi) {
         return new RateAdviceCommand(pickupBotApi);
+    }
+
+    @Bean
+    public TopicSubscribeCommand topicSubscribeCommand(PickupBotApi pickupBotApi) {
+        return new TopicSubscribeCommand(pickupBotApi);
     }
 
     @Bean

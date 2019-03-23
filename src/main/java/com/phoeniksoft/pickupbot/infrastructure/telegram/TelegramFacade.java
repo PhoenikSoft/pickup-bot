@@ -59,7 +59,7 @@ public class TelegramFacade {
             return Arrays.asList(Optional.of(defaultCommand.execute(commandInput)));
         } else if (update.hasCallbackQuery()) {
             CallbackQuery callbackQuery = update.getCallbackQuery();
-            String command = parseCallbackAnswer(callbackQuery.getData())[1];
+            String command = parseCallbackAnswer(callbackQuery.getData())[0];
             QueryCallbackCommand queryCallbackCommand = callbackCommands.get(command);
             if (queryCallbackCommand != null) {
                 List<BotApiMethod> callbackCommands = queryCallbackCommand.handleCallback(callbackQuery);

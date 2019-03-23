@@ -18,6 +18,15 @@ public class JpaSubscriptionService implements SubscriptionService {
     public Subscription subscribe(User user, Topic topic) {
         UserDto userDto = userRepository.findByTelegramId(user.getId())
                 .orElseThrow(() -> new IllegalArgumentException("There is no user with such telegram id for save"));
-        return this.userSubscriptionRepository.save(UserSubscriptionDto.of(userDto, topic)).toSubscription();
+        checkSubscriptionForDuplication(userDto, topic);
+        return userSubscriptionRepository.save(UserSubscriptionDto.of(userDto, topic)).toSubscription();
+    }
+
+    private void checkSubscriptionForDuplication(UserDto userDto, Topic topic) {
+        if (userSubscriptionRepository.existsByUserAndTopic(userDto, topic)) {
+            throw new UserWithTopicDuplicateException(
+                    String.format("Cannot save user subscription, because there is already user [%s] with topic [%S] in DB",
+                            userDto.getId(), topic));
+        }
     }
 }

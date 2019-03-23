@@ -20,6 +20,7 @@ public interface TelegramConstants {
     String UNEXPECTED_ERROR = "Возникла ошибка, попробуй ещё раз \uD83D\uDD27";
     String CHOOSE_OPTION_MSG = "Выбери следующее действие \u2B07";
     String THANKS_FOR_FEEDBACK_MSG = "Спасибо за ответ!";
+    String THANKS_FOR_SUBSCRIBE_MSG = "Спасибо за подписку!";
     String SUBSCRIBE_MSG = "Если хочешь получать уведомления на тему \"%s\", нажми на кнопку ниже. Подпишись по братски :)";
 
     String MESSAGES_LABEL = "Первые сообщения";

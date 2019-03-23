@@ -46,8 +46,8 @@ public class GetAdviceCommand extends SendMessageListCommand {
         }
 
         SendMessage adviceMessage = newSendMessage(input).setText(advice.getMsg());
-        String likeButtonData = constructCallbackAnswer(advice.getPayload().get(UserAdvice.ADVICE_ID_PARAM).toString(), GOOD_ADVICE_COMMAND);
-        String dislikeButtonData = constructCallbackAnswer(advice.getPayload().get(UserAdvice.ADVICE_ID_PARAM).toString(), BAD_ADVICE_COMMAND);
+        String likeButtonData = constructCallbackAnswer(GOOD_ADVICE_COMMAND, advice.getPayload().get(UserAdvice.ADVICE_ID_PARAM).toString());
+        String dislikeButtonData = constructCallbackAnswer(BAD_ADVICE_COMMAND, advice.getPayload().get(UserAdvice.ADVICE_ID_PARAM).toString());
         InlineButtonData[][] adviceMessageButtons = {{
                 new InlineButtonData(GOOD_ADVICE_COMMAND, likeButtonData),
                 new InlineButtonData(BAD_ADVICE_COMMAND, dislikeButtonData)
@@ -55,7 +55,7 @@ public class GetAdviceCommand extends SendMessageListCommand {
         addInlineKeyboardWithButtons(adviceMessage, adviceMessageButtons);
 
         SendMessage subscribeMessage = newSendMessage(input).setText(getSubscribeMessage());
-        String subscribeButtonData = constructCallbackAnswer(commandConfig.topic.name(), SUBSCRIBE_COMMAND);
+        String subscribeButtonData = constructCallbackAnswer(SUBSCRIBE_COMMAND, commandConfig.topic.name());
         InlineButtonData[][] subscribeMessageButtons = {{
                 new InlineButtonData(SUBSCRIBE_COMMAND, subscribeButtonData)
         }};
