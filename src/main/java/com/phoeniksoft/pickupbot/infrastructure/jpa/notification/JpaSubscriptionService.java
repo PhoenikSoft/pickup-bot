@@ -8,6 +8,9 @@ import com.phoeniksoft.pickupbot.infrastructure.jpa.user.UserDto;
 import com.phoeniksoft.pickupbot.infrastructure.jpa.user.UserRepository;
 import lombok.AllArgsConstructor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor
 public class JpaSubscriptionService implements SubscriptionService {
 
@@ -20,6 +23,13 @@ public class JpaSubscriptionService implements SubscriptionService {
                 .orElseThrow(() -> new IllegalArgumentException("There is no user with such telegram id for save"));
         checkSubscriptionForDuplication(userDto, topic);
         return userSubscriptionRepository.save(UserSubscriptionDto.of(userDto, topic)).toSubscription();
+    }
+
+    @Override
+    public List<User> getUsersSubscribedToTopic(Topic topic) {
+        return userSubscriptionRepository.getUsersSubscribedToTopic(topic).stream()
+                .map(UserDto::toTelegramUser)
+                .collect(Collectors.toList());
     }
 
     private void checkSubscriptionForDuplication(UserDto userDto, Topic topic) {

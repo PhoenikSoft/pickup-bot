@@ -57,4 +57,16 @@ class JpaSubscriptionServiceTest extends Specification {
         ex.message == 'Cannot save user subscription, because there is already user [1] with topic [MESSAGE] in DB'
         0 * userSubscriptionRepository.save(_)
     }
+
+    def "test getting subscribed users to topic"() {
+        given:
+        1 * userSubscriptionRepository.getUsersSubscribedToTopic(Topic.MESSAGE) >>
+                Arrays.asList(new UserDto(id: 1L, telegramId: 'testId'))
+
+        when:
+        def users = jpaSubscriptionService.getUsersSubscribedToTopic(Topic.MESSAGE)
+
+        then:
+        users == [new User('testId')]
+    }
 }

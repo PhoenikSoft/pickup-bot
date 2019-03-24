@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -52,5 +54,14 @@ public class UserSubscriptionRepositoryTest extends JpaIntegrationTest {
         boolean exists = userSubscriptionRepository.existsByUserAndTopic(userDto, Topic.PROFILE);
 
         assertFalse(exists);
+    }
+
+    @Test
+    public void testGetUsersSubscribedToTopic() {
+        List<UserDto> users = userSubscriptionRepository.getUsersSubscribedToTopic(Topic.MESSAGE);
+
+        assertEquals(2, users.size());
+        assertEquals(1L, (long) users.get(0).getId());
+        assertEquals(3L, (long) users.get(1).getId());
     }
 }

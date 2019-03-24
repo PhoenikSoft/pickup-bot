@@ -4,6 +4,7 @@ import com.phoeniksoft.pickupbot.domain.core.PickupBotApi;
 import com.phoeniksoft.pickupbot.domain.core.UserCommand;
 import com.phoeniksoft.pickupbot.domain.core.user.UserStore;
 import com.phoeniksoft.pickupbot.domain.notification.NotificationService;
+import com.phoeniksoft.pickupbot.domain.notification.SubscriptionService;
 import com.phoeniksoft.pickupbot.domain.notification.Topic;
 import com.phoeniksoft.pickupbot.infrastructure.telegram.command.GetAdviceCommand;
 import com.phoeniksoft.pickupbot.infrastructure.telegram.command.IllegalUserTextCommand;
@@ -105,7 +106,8 @@ public class TelegramConfig implements TelegramConstants {
     }
 
     @Bean
-    public NotificationService notificationService(UserStore userStore, PickupBot pickupBot) {
-        return new TelegramNotificationService(userStore, pickupBot);
+    public NotificationService notificationService(UserStore userStore, PickupBot pickupBot,
+                                                   SubscriptionService subscriptionService) {
+        return new TelegramNotificationService(userStore, pickupBot, subscriptionService);
     }
 }
