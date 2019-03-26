@@ -22,7 +22,7 @@ public class NotificationResource extends NotificationResourceV1 {
 
     @PutMapping
     public String notifyUsers(@RequestParam(required = false) Topic topic,
-                                 @RequestBody @Valid GlobalMessageDto globalMessageDto) {
+                              @RequestBody @Valid GlobalMessageDto globalMessageDto) {
         if (topic != null) {
             notificationService.notifyByTopic(globalMessageDto.toGlobalMessage(), topic);
         } else {
