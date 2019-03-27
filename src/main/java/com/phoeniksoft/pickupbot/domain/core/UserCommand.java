@@ -13,7 +13,8 @@ public enum UserCommand {
     GET_NEXT_ADVICE(AdviceGoal.NEXT_ADVICE),
     GET_DATE_ADVICE(AdviceGoal.DATE_ADVICE),
     GET_PROFILE_ADVICE(AdviceGoal.PROFILE_IMPROVEMENT),
-    RATE_ADVICE;
+    RATE_ADVICE,
+    SUBSCRIBE_TO_TOPIC;
 
     private AdviceGoal adviceGoal;
 }

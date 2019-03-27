@@ -42,7 +42,7 @@ public class UserAnswerDto {
     UserAnswerHistory toUserAnswerHistory() {
         return UserAnswerHistory.builder()
                 .id(id)
-                .user(user.toUser())
+                .user(user.toTelegramUser())
                 .answer(answer)
                 .adviceId(adviceId.toString())
                 .created(created)

@@ -30,4 +30,8 @@ public class SimplePickupBotImpl implements PickupBotApi {
     public void saveUserAnswer(UserQuery userQuery) {
 
     }
+
+    @Override
+    public void subscribe(UserQuery userQuery) {
+    }
 }

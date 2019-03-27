@@ -6,6 +6,7 @@ public interface TelegramConstants {
     String GET_ADVICE_COMMAND = "Получить совет \uD83D\uDD25";
     String GOOD_ADVICE_COMMAND = "Одобряю \uD83D\uDC4D";
     String BAD_ADVICE_COMMAND = "Так себе \uD83D\uDC4E";
+    String SUBSCRIBE_COMMAND = "Подписаться";
     String GET_MESSAGE_ADVICE_COMMAND = "Вариант первого сообщения \u2709";
     String GET_DATE_ADVICE_COMMAND = "Вариант для встречи \u2615";
     String GET_PROFILE_ADVICE_COMMAND = "Совет по профилю \uD83E\uDD35";
@@ -19,4 +20,10 @@ public interface TelegramConstants {
     String UNEXPECTED_ERROR = "Возникла ошибка, попробуй ещё раз \uD83D\uDD27";
     String CHOOSE_OPTION_MSG = "Выбери следующее действие \u2B07";
     String THANKS_FOR_FEEDBACK_MSG = "Спасибо за ответ!";
+    String THANKS_FOR_SUBSCRIBE_MSG = "Спасибо за подписку!";
+    String SUBSCRIBE_MSG = "Если хочешь получать уведомления на тему \"%s\", нажми на кнопку ниже. Подпишись по братски :)";
+
+    String MESSAGES_LABEL = "Первые сообщения";
+    String DATE_LABEL = "Свидание";
+    String PROFILE_LABEL = "Профиль";
 }

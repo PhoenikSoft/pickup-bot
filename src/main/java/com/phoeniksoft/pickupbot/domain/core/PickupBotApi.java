@@ -8,4 +8,6 @@ public interface PickupBotApi {
     UserAdvice getAdvice(UserQuery userQuery);
 
     void saveUserAnswer(UserQuery userQuery);
+
+    void subscribe(UserQuery userQuery);
 }

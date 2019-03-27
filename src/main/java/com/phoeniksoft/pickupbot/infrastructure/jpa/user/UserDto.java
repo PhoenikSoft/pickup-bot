@@ -2,15 +2,18 @@ package com.phoeniksoft.pickupbot.infrastructure.jpa.user;
 
 import com.phoeniksoft.pickupbot.domain.core.user.User;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
 @Data
-@NoArgsConstructor
 public class UserDto {
 
     @Id
@@ -21,7 +24,7 @@ public class UserDto {
     @Column(name = "telegram_id")
     private String telegramId;
 
-    public User toUser() {
+    public User toTelegramUser() {
         return new User(telegramId);
     }
 

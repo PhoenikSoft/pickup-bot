@@ -2,7 +2,12 @@ package com.phoeniksoft.pickupbot.app.config;
 
 import com.phoeniksoft.pickupbot.domain.context.ContextFiller;
 import com.phoeniksoft.pickupbot.domain.context.ContextInterceptorsFiller;
-import com.phoeniksoft.pickupbot.domain.context.interceptors.*;
+import com.phoeniksoft.pickupbot.domain.context.interceptors.ContextInterceptor;
+import com.phoeniksoft.pickupbot.domain.context.interceptors.PreviousAdviceInterceptor;
+import com.phoeniksoft.pickupbot.domain.context.interceptors.TopicInterceptor;
+import com.phoeniksoft.pickupbot.domain.context.interceptors.UserAnswerInterceptor;
+import com.phoeniksoft.pickupbot.domain.context.interceptors.UserCommandInterceptor;
+import com.phoeniksoft.pickupbot.domain.context.interceptors.UserInfoInterceptor;
 import com.phoeniksoft.pickupbot.domain.core.user.UserStore;
 import com.phoeniksoft.pickupbot.domain.history.HistoryService;
 import org.springframework.context.annotation.Bean;
@@ -39,14 +44,18 @@ public class ContextConfig {
     }
 
     @Bean
-    public ContextFiller contextFiller(UserCommandInterceptor userCommandInterceptor,
-                                       UserAnswerInterceptor userAnswerInterceptor,
-                                       UserInfoInterceptor userInfoInterceptor,
+    public TopicInterceptor topicInterceptor() {
+        return new TopicInterceptor();
+    }
+
+    @Bean
+    public ContextFiller contextFiller(UserInfoInterceptor userInfoInterceptor,
                                        PreviousAdviceInterceptor previousAdviceInterceptor) {
-        List<ContextInterceptor> interceptors = Arrays.asList(userCommandInterceptor,
-                userAnswerInterceptor,
+        List<ContextInterceptor> interceptors = Arrays.asList(userCommandInterceptor(),
+                userAnswerInterceptor(),
                 userInfoInterceptor,
-                previousAdviceInterceptor);
+                previousAdviceInterceptor,
+                topicInterceptor());
         interceptors.sort(Comparator.comparingInt(ContextInterceptor::priority).reversed());
         return new ContextInterceptorsFiller(interceptors);
     }

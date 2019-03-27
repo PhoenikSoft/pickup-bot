@@ -3,6 +3,7 @@ package com.phoeniksoft.pickupbot.infrastructure.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.phoeniksoft.pickupbot.domain.notification.GlobalMessage;
 import com.phoeniksoft.pickupbot.domain.notification.NotificationService;
+import com.phoeniksoft.pickupbot.domain.notification.Topic;
 import com.phoeniksoft.pickupbot.infrastructure.web.dto.GlobalMessageDto;
 import lombok.SneakyThrows;
 import org.junit.Test;
@@ -14,7 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.phoeniksoft.pickupbot.infrastructure.web.NotificationResourceV1.ALL_USERS_NOTIFIED_MSG;
+import static com.phoeniksoft.pickupbot.infrastructure.web.NotificationResourceV1.USERS_NOTIFIED_MSG;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -42,7 +43,7 @@ public class NotificationResourceTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))
                 .andExpect(status().isOk())
-                .andExpect(content().string(ALL_USERS_NOTIFIED_MSG));
+                .andExpect(content().string(USERS_NOTIFIED_MSG));
         verify(notificationService).notifyAll(new GlobalMessage("testMsg"));
     }
 
@@ -57,6 +58,20 @@ public class NotificationResourceTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @SneakyThrows
+    public void testNotifyUsersByTopic() {
+        String body = objectMapper.writeValueAsString(mockGlobalMessage());
+
+        mvc.perform(put("/api/v1/notifications")
+                .param("topic", "DATE")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
+                .andExpect(status().isOk())
+                .andExpect(content().string(USERS_NOTIFIED_MSG));
+        verify(notificationService).notifyByTopic(new GlobalMessage("testMsg"), Topic.DATE);
     }
 
     private static GlobalMessageDto mockGlobalMessage() {

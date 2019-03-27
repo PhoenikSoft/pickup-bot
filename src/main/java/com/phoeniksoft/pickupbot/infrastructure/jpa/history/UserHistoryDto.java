@@ -38,7 +38,7 @@ public class UserHistoryDto {
     UserHistory toUserHistory() {
         return UserHistory.builder()
                 .id(id)
-                .user(user.toUser())
+                .user(user.toTelegramUser())
                 .adviceId(adviceId.toString())
                 .created(created)
                 .build();
