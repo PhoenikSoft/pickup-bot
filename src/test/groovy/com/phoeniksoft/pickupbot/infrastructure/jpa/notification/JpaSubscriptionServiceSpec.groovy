@@ -9,7 +9,7 @@ import spock.lang.Specification
 
 import java.time.LocalDateTime
 
-class JpaSubscriptionServiceTest extends Specification {
+class JpaSubscriptionServiceSpec extends Specification {
     UserSubscriptionRepository userSubscriptionRepository = Mock()
     UserRepository userRepository = Mock()
     def jpaSubscriptionService = new JpaSubscriptionService(userSubscriptionRepository, userRepository)

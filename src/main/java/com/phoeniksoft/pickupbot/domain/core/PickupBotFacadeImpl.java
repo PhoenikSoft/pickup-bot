@@ -6,6 +6,7 @@ import com.phoeniksoft.pickupbot.domain.context.ContextFiller;
 import com.phoeniksoft.pickupbot.domain.context.UserContext;
 import com.phoeniksoft.pickupbot.domain.history.HistoryService;
 import com.phoeniksoft.pickupbot.domain.history.UserAnswersService;
+import com.phoeniksoft.pickupbot.domain.history.UserProposalsService;
 import com.phoeniksoft.pickupbot.domain.notification.SubscriptionService;
 import com.phoeniksoft.pickupbot.domain.notification.Topic;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class PickupBotFacadeImpl implements PickupBotApi {
     private final HistoryService historyService;
     private final UserAnswersService userAnswersService;
     private final SubscriptionService subscriptionService;
+    private final UserProposalsService userProposalsService;
 
     @Override
     public UserAdvice getAdvice(UserQuery userQuery) {
@@ -38,6 +40,12 @@ public class PickupBotFacadeImpl implements PickupBotApi {
     public void saveUserAnswer(UserQuery userQuery) {
         UserContext userContext = contextFiller.fillContext(userQuery);
         userAnswersService.saveAnswer(userContext);
+    }
+
+    @Override
+    public void saveUserProposal(UserQuery userQuery) {
+        UserContext userContext = contextFiller.fillContext(userQuery);
+        userProposalsService.saveProposal(userContext);
     }
 
     @Override

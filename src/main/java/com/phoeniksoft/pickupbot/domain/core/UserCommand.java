@@ -14,6 +14,7 @@ public enum UserCommand {
     GET_DATE_ADVICE(AdviceGoal.DATE_ADVICE),
     GET_PROFILE_ADVICE(AdviceGoal.PROFILE_IMPROVEMENT),
     RATE_ADVICE,
+    ADD_USER_PROPOSAL,
     SUBSCRIBE_TO_TOPIC;
 
     private AdviceGoal adviceGoal;

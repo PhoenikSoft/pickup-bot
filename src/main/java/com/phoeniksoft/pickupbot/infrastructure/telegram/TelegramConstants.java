@@ -11,6 +11,7 @@ public interface TelegramConstants {
     String GET_DATE_ADVICE_COMMAND = "Вариант для встречи \u2615";
     String GET_PROFILE_ADVICE_COMMAND = "Совет по профилю \uD83E\uDD35";
     String RETURN_TO_MAIN_MENU_COMMAND = "Вернуться в главное меню \u21A9";
+    String PROPOSE_PICKUP_MESSAGE_COMMAND = "Предложить свое пикап-сообщение";
 
     String GREETING_MSG = "Привет!\n\n Я Пикап Бот и моя миссия - упростить процесс знакомства с девушками в интернете. Всегда всё в твоих руках, просто я дам тебе пару подсказок. Давай начнём! \uD83D\uDE80";
     String ALL_MESSAGES_SHOWN_MSG = "Кажется это пока всё, что у меня есть. Сейчас советы будут повторяться, но жди обновлений \uD83D\uDDE3";
@@ -22,6 +23,8 @@ public interface TelegramConstants {
     String THANKS_FOR_FEEDBACK_MSG = "Спасибо за ответ!";
     String THANKS_FOR_SUBSCRIBE_MSG = "Спасибо за подписку!";
     String SUBSCRIBE_MSG = "Если хочешь получать уведомления на тему \"%s\", нажми на кнопку ниже. Подпишись по братски :)";
+    String SEND_YOUR_MESSAGE_MSG = "Впиши свое сообщение ниже и мы рассмотрим его (это анонимно). Возможно оно появится в нашем списке и ты поможешь другим парням. На то, чтобы вписать свое сообщение у тебя есть 10 минут.";
+    String THANK_YOU_FOR_YOUR_MESSAGE_MSG = "Спасибо за твой вклад!";
 
     String MESSAGES_LABEL = "Первые сообщения";
     String DATE_LABEL = "Свидание";
