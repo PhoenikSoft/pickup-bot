@@ -54,10 +54,6 @@ public class TelegramFacade {
             String messageText = update.getMessage().getText();
             TelegramCommandInput commandInput = TelegramCommandInput.of(update);
 
-            if (saveUserProposalCommand.isApplicable(commandInput)) {
-                SendMessage message = saveUserProposalCommand.execute(commandInput);
-                return Arrays.asList(Optional.of(message));
-            }
             SendMessageCommand oneMessageCommand = oneMessageCommands.get(messageText);
             if (oneMessageCommand != null) {
                 SendMessage message = oneMessageCommand.execute(commandInput);
@@ -68,6 +64,10 @@ public class TelegramFacade {
                 return fewMessagesCommand.execute(commandInput).stream()
                         .map(Optional::of)
                         .collect(Collectors.toList());
+            }
+            if (saveUserProposalCommand.isApplicable(commandInput)) {
+                SendMessage message = saveUserProposalCommand.execute(commandInput);
+                return Arrays.asList(Optional.of(message));
             }
 
             return Arrays.asList(Optional.of(defaultCommand.execute(commandInput)));
