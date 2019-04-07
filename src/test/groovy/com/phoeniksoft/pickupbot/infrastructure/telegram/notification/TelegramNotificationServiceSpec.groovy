@@ -15,7 +15,7 @@ import spock.lang.Specification
 
 import static org.mockito.Mockito.when
 
-class TelegramNotificationServiceTest extends Specification {
+class TelegramNotificationServiceSpec extends Specification {
 
     @Mock
     UserStore userStore

@@ -14,6 +14,8 @@ public class UserContext {
 
     private UserAnswer userAnswer;
 
+    private String userFreeText;
+
     private User user;
 
     private ContextPayload payload = new ContextPayload();

@@ -1,6 +1,11 @@
 package com.phoeniksoft.pickupbot.infrastructure.telegram;
 
-import com.phoeniksoft.pickupbot.infrastructure.telegram.command.*;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.IllegalUserTextCommand;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.QueryCallbackCommand;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.SaveUserProposalCommand;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.SendMessageCommand;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.SendMessageListCommand;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.TelegramCommandInput;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -24,6 +29,10 @@ import static com.phoeniksoft.pickupbot.infrastructure.telegram.utils.TelegramCo
 public class TelegramFacade {
 
     /**
+     * Command that saves user free written text.
+     */
+    private final SaveUserProposalCommand saveUserProposalCommand;
+    /**
      * Commands that return only one response message.
      */
     private final Map<String, SendMessageCommand> oneMessageCommands;
@@ -44,6 +53,7 @@ public class TelegramFacade {
         if (update.hasMessage() && update.getMessage().hasText()) {
             String messageText = update.getMessage().getText();
             TelegramCommandInput commandInput = TelegramCommandInput.of(update);
+
             SendMessageCommand oneMessageCommand = oneMessageCommands.get(messageText);
             if (oneMessageCommand != null) {
                 SendMessage message = oneMessageCommand.execute(commandInput);
@@ -54,6 +64,10 @@ public class TelegramFacade {
                 return fewMessagesCommand.execute(commandInput).stream()
                         .map(Optional::of)
                         .collect(Collectors.toList());
+            }
+            if (saveUserProposalCommand.isApplicable(commandInput)) {
+                SendMessage message = saveUserProposalCommand.execute(commandInput);
+                return Arrays.asList(Optional.of(message));
             }
 
             return Arrays.asList(Optional.of(defaultCommand.execute(commandInput)));

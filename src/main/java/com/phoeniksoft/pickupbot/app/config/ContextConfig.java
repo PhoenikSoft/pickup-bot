@@ -7,6 +7,7 @@ import com.phoeniksoft.pickupbot.domain.context.interceptors.PreviousAdviceInter
 import com.phoeniksoft.pickupbot.domain.context.interceptors.TopicInterceptor;
 import com.phoeniksoft.pickupbot.domain.context.interceptors.UserAnswerInterceptor;
 import com.phoeniksoft.pickupbot.domain.context.interceptors.UserCommandInterceptor;
+import com.phoeniksoft.pickupbot.domain.context.interceptors.UserFreeTextInterceptor;
 import com.phoeniksoft.pickupbot.domain.context.interceptors.UserInfoInterceptor;
 import com.phoeniksoft.pickupbot.domain.core.user.UserStore;
 import com.phoeniksoft.pickupbot.domain.history.HistoryService;
@@ -49,13 +50,19 @@ public class ContextConfig {
     }
 
     @Bean
+    public UserFreeTextInterceptor userFreeTextInterceptor() {
+        return new UserFreeTextInterceptor();
+    }
+
+    @Bean
     public ContextFiller contextFiller(UserInfoInterceptor userInfoInterceptor,
                                        PreviousAdviceInterceptor previousAdviceInterceptor) {
         List<ContextInterceptor> interceptors = Arrays.asList(userCommandInterceptor(),
                 userAnswerInterceptor(),
                 userInfoInterceptor,
                 previousAdviceInterceptor,
-                topicInterceptor());
+                topicInterceptor(),
+                userFreeTextInterceptor());
         interceptors.sort(Comparator.comparingInt(ContextInterceptor::priority).reversed());
         return new ContextInterceptorsFiller(interceptors);
     }

@@ -11,11 +11,15 @@ import com.phoeniksoft.pickupbot.infrastructure.telegram.command.IllegalUserText
 import com.phoeniksoft.pickupbot.infrastructure.telegram.command.MainMenuCommand;
 import com.phoeniksoft.pickupbot.infrastructure.telegram.command.QueryCallbackCommand;
 import com.phoeniksoft.pickupbot.infrastructure.telegram.command.RateAdviceCommand;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.SaveUserProposalCommand;
 import com.phoeniksoft.pickupbot.infrastructure.telegram.command.SendMessageCommand;
 import com.phoeniksoft.pickupbot.infrastructure.telegram.command.SendMessageListCommand;
 import com.phoeniksoft.pickupbot.infrastructure.telegram.command.StartCommand;
 import com.phoeniksoft.pickupbot.infrastructure.telegram.command.TopicSubscribeCommand;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.command.UserMessageProposalCommand;
 import com.phoeniksoft.pickupbot.infrastructure.telegram.notification.TelegramNotificationService;
+import com.phoeniksoft.pickupbot.infrastructure.telegram.utils.UsersTransactionsStorage;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -44,10 +48,11 @@ public class TelegramConfig implements TelegramConstants {
     }
 
     @Bean
-    public TelegramFacade telegramFacade(PickupBotApi pickupBotApi) {
+    public TelegramFacade telegramFacade(UsersTransactionsStorage usersTransactionsStorage, PickupBotApi pickupBotApi) {
         Map<String, SendMessageCommand> oneMessageCommands = new HashMap<>(2);
         oneMessageCommands.put(START_COMMAND, startCommand());
         oneMessageCommands.put(RETURN_TO_MAIN_MENU_COMMAND, mainMenuCommand());
+        oneMessageCommands.put(PROPOSE_PICKUP_MESSAGE_COMMAND, userMessageProposalCommand(usersTransactionsStorage));
         Map<String, SendMessageListCommand> manyMessagesCommands = new HashMap<>(3);
         manyMessagesCommands.put(GET_MESSAGE_ADVICE_COMMAND, startAdviceCommand(pickupBotApi));
         manyMessagesCommands.put(GET_DATE_ADVICE_COMMAND, dateAdviceCommand(pickupBotApi));
@@ -56,7 +61,8 @@ public class TelegramConfig implements TelegramConstants {
         callbackCommands.put(GOOD_ADVICE_COMMAND, rateAdviceCommand(pickupBotApi));
         callbackCommands.put(BAD_ADVICE_COMMAND, rateAdviceCommand(pickupBotApi));
         callbackCommands.put(SUBSCRIBE_COMMAND, topicSubscribeCommand(pickupBotApi));
-        return new TelegramFacade(Collections.unmodifiableMap(oneMessageCommands),
+        return new TelegramFacade(saveUserProposalCommand(usersTransactionsStorage, pickupBotApi),
+                Collections.unmodifiableMap(oneMessageCommands),
                 Collections.unmodifiableMap(manyMessagesCommands),
                 Collections.unmodifiableMap(callbackCommands),
                 illegalUserTextCommand());
@@ -101,6 +107,16 @@ public class TelegramConfig implements TelegramConstants {
     }
 
     @Bean
+    public UserMessageProposalCommand userMessageProposalCommand(UsersTransactionsStorage usersTransactionsStorage) {
+        return new UserMessageProposalCommand(usersTransactionsStorage);
+    }
+
+    @Bean
+    public SaveUserProposalCommand saveUserProposalCommand(UsersTransactionsStorage usersTransactionsStorage, PickupBotApi pickupBotApi) {
+        return new SaveUserProposalCommand(usersTransactionsStorage, pickupBotApi);
+    }
+
+    @Bean
     public IllegalUserTextCommand illegalUserTextCommand() {
         return new IllegalUserTextCommand();
     }
@@ -109,5 +125,10 @@ public class TelegramConfig implements TelegramConstants {
     public NotificationService notificationService(UserStore userStore, PickupBot pickupBot,
                                                    SubscriptionService subscriptionService) {
         return new TelegramNotificationService(userStore, pickupBot, subscriptionService);
+    }
+
+    @Bean
+    public UsersTransactionsStorage usersTransactionsStorage(@Value("${telegram.userstorage.config}") String storageConfig) {
+        return new UsersTransactionsStorage(storageConfig);
     }
 }

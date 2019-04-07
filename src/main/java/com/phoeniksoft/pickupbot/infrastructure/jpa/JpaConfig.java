@@ -3,9 +3,12 @@ package com.phoeniksoft.pickupbot.infrastructure.jpa;
 import com.phoeniksoft.pickupbot.domain.core.user.UserStore;
 import com.phoeniksoft.pickupbot.domain.history.HistoryService;
 import com.phoeniksoft.pickupbot.domain.history.UserAnswersService;
+import com.phoeniksoft.pickupbot.domain.history.UserProposalsService;
 import com.phoeniksoft.pickupbot.domain.notification.SubscriptionService;
 import com.phoeniksoft.pickupbot.infrastructure.jpa.answer.JpaUserAnswersService;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.answer.JpaUserProposalsService;
 import com.phoeniksoft.pickupbot.infrastructure.jpa.answer.UserAnswersRepository;
+import com.phoeniksoft.pickupbot.infrastructure.jpa.answer.UserProposalsRepository;
 import com.phoeniksoft.pickupbot.infrastructure.jpa.history.JpaHistoryService;
 import com.phoeniksoft.pickupbot.infrastructure.jpa.history.UserHistoryRepository;
 import com.phoeniksoft.pickupbot.infrastructure.jpa.notification.JpaSubscriptionService;
@@ -59,6 +62,12 @@ public class JpaConfig {
     public SubscriptionService subscriptionService(UserSubscriptionRepository userSubscriptionRepository,
                                                    UserRepository userRepository) {
         return new JpaSubscriptionService(userSubscriptionRepository, userRepository);
+    }
+
+    @Bean
+    public UserProposalsService userProposalsService(UserProposalsRepository userProposalsRepository,
+                                                     UserRepository userRepository) {
+        return new JpaUserProposalsService(userProposalsRepository, userRepository);
     }
 
     @Primary

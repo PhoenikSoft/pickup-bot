@@ -9,5 +9,7 @@ public interface PickupBotApi {
 
     void saveUserAnswer(UserQuery userQuery);
 
+    void saveUserProposal(UserQuery userQuery);
+
     void subscribe(UserQuery userQuery);
 }

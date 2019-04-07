@@ -5,6 +5,7 @@ import com.phoeniksoft.pickupbot.domain.context.ContextFiller
 import com.phoeniksoft.pickupbot.domain.core.user.User
 import com.phoeniksoft.pickupbot.domain.history.HistoryService
 import com.phoeniksoft.pickupbot.domain.history.UserAnswersService
+import com.phoeniksoft.pickupbot.domain.history.UserProposalsService
 import com.phoeniksoft.pickupbot.domain.notification.SubscriptionService
 import com.phoeniksoft.pickupbot.domain.notification.Topic
 import com.phoeniksoft.pickupbot.utils.AdvisorTestData
@@ -16,7 +17,9 @@ class PickupBotFacadeImplSpec extends Specification implements AdvisorTestData {
     def historyService = Mock(HistoryService)
     def userAnswersService = Mock(UserAnswersService)
     def subscriptionService = Mock(SubscriptionService)
-    def pickupBotFacadeImpl = new PickupBotFacadeImpl(contextFiller, advisor, historyService, userAnswersService, subscriptionService)
+    def userProposalsService = Mock(UserProposalsService)
+    def pickupBotFacadeImpl = new PickupBotFacadeImpl(contextFiller, advisor, historyService, userAnswersService,
+            subscriptionService, userProposalsService)
 
     def "test get advice - full road"() {
         given:
@@ -46,6 +49,18 @@ class PickupBotFacadeImplSpec extends Specification implements AdvisorTestData {
 
         then:
         1 * userAnswersService.saveAnswer(context)
+    }
+
+    def "test save user proposal"() {
+        given:
+        def context = validUserContext()
+        contextFiller.fillContext(_) >> context
+
+        when:
+        pickupBotFacadeImpl.saveUserProposal(UserQuery.builder().build())
+
+        then:
+        1 * userProposalsService.saveProposal(context)
     }
 
     def "test subscribe user"() {
