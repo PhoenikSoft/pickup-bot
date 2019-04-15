@@ -1,5 +1,6 @@
 package com.phoeniksoft.pickupbot.infrastructure.jpa;
 
+import com.phoeniksoft.pickupbot.app.config.CoreProperties;
 import com.phoeniksoft.pickupbot.domain.core.user.UserStore;
 import com.phoeniksoft.pickupbot.domain.history.HistoryService;
 import com.phoeniksoft.pickupbot.domain.history.UserAnswersService;
@@ -66,8 +67,8 @@ public class JpaConfig {
 
     @Bean
     public UserProposalsService userProposalsService(UserProposalsRepository userProposalsRepository,
-                                                     UserRepository userRepository) {
-        return new JpaUserProposalsService(userProposalsRepository, userRepository);
+                                                     UserRepository userRepository, CoreProperties coreProperties) {
+        return new JpaUserProposalsService(userProposalsRepository, userRepository, coreProperties);
     }
 
     @Primary

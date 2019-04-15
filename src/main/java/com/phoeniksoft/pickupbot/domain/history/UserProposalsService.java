@@ -7,5 +7,5 @@ import com.phoeniksoft.pickupbot.domain.context.UserContext;
  */
 public interface UserProposalsService {
 
-    UserProposal saveProposal(UserContext context);
+    UserProposal saveProposal(UserContext context) throws TooManyUserProposalsException;
 }
