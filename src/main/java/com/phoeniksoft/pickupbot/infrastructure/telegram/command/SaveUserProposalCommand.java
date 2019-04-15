@@ -5,6 +5,7 @@ import com.phoeniksoft.pickupbot.domain.core.UserCommand;
 import com.phoeniksoft.pickupbot.domain.core.UserMessage;
 import com.phoeniksoft.pickupbot.domain.core.UserQuery;
 import com.phoeniksoft.pickupbot.domain.core.UserQueryParams;
+import com.phoeniksoft.pickupbot.domain.history.TooManyUserProposalsException;
 import com.phoeniksoft.pickupbot.infrastructure.telegram.utils.UsersTransactionsStorage;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
@@ -31,13 +32,18 @@ public class SaveUserProposalCommand extends SendMessageCommand implements Appli
                 .message(new UserMessage(input.getMessageText()))
                 .build();
         query.getSpecificParams().put(UserQueryParams.USER_ID_PARAM, input.getChatId());
+
+        String msg;
         try {
             pickupBotApi.saveUserProposal(query);
+            msg = THANK_YOU_FOR_YOUR_MESSAGE_MSG;
+        } catch (TooManyUserProposalsException ex) {
+            msg = USER_PROPOSALS_LIMIT_EXCEEDED_MSG;
         } finally {
             usersTransactionsStorage.remove(input.getChatId());
         }
 
-        message.setText(THANK_YOU_FOR_YOUR_MESSAGE_MSG);
+        message.setText(msg);
         addKeyboardWithMainMenuButtons(message);
     }
 }
