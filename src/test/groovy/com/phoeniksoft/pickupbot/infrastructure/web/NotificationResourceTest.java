@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(NotificationResource.class)
+@WebMvcTest(value = NotificationResource.class, secure = false)
 public class NotificationResourceTest {
 
     @Autowired
