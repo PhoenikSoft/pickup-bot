@@ -20,7 +20,6 @@ import java.util.stream.Stream;
 import static com.phoeniksoft.pickupbot.infrastructure.telegram.TelegramConstants.GET_DATE_ADVICE_COMMAND;
 import static com.phoeniksoft.pickupbot.infrastructure.telegram.TelegramConstants.GET_MESSAGE_ADVICE_COMMAND;
 import static com.phoeniksoft.pickupbot.infrastructure.telegram.TelegramConstants.GET_PROFILE_ADVICE_COMMAND;
-import static com.phoeniksoft.pickupbot.infrastructure.telegram.TelegramConstants.PROPOSE_PICKUP_MESSAGE_COMMAND;
 import static com.phoeniksoft.pickupbot.infrastructure.telegram.TelegramConstants.RETURN_TO_MAIN_MENU_COMMAND;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -32,8 +31,7 @@ public class TelegramConstructorUtil {
         String[][] buttons = {
                 {GET_MESSAGE_ADVICE_COMMAND},
                 {GET_DATE_ADVICE_COMMAND},
-                {GET_PROFILE_ADVICE_COMMAND},
-                {PROPOSE_PICKUP_MESSAGE_COMMAND}
+                {GET_PROFILE_ADVICE_COMMAND}
         };
         addKeyboardWithButtons(message, buttons);
     }
