@@ -62,10 +62,20 @@ public class GetAdviceCommand extends SendMessageListCommand {
         addInlineKeyboardWithButtons(subscribeMessage, subscribeMessageButtons);
 
         SendMessage nextActionsMessage = newSendMessage(input).setText(CHOOSE_OPTION_MSG);
-        String[][] nextMessageButtons = {{commandConfig.commandLabel}, {RETURN_TO_MAIN_MENU_COMMAND}};
-        addKeyboardWithButtons(nextActionsMessage, nextMessageButtons);
+        addKeyboardWithButtons(nextActionsMessage, getNextMessageButtons());
 
         return Arrays.asList(adviceMessage, subscribeMessage, nextActionsMessage);
+    }
+
+    private String[][] getNextMessageButtons() {
+        if (commandConfig.topic == Topic.MESSAGE) {
+            return new String[][]{
+                    {commandConfig.commandLabel},
+                    {PROPOSE_PICKUP_MESSAGE_COMMAND},
+                    {RETURN_TO_MAIN_MENU_COMMAND}
+            };
+        }
+        return new String[][]{{commandConfig.commandLabel}, {RETURN_TO_MAIN_MENU_COMMAND}};
     }
 
     private String getSubscribeMessage() {
